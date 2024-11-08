@@ -8,7 +8,7 @@
 typedef struct FrameBuffer {
     unsigned char *pixels;
     int width;
-    int heigth;
+    int height;
     int size[2];
 } FrameBuffer;
 

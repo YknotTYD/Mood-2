@@ -40,14 +40,14 @@ static void load_intersection(long double intersect[2],
     if (!delta_cmp(t, delta)){
         return;
     }
-        
+
     intersect[0] = x1 + (s / delta) * a;
     intersect[1] = y1 + (s / delta) * d;
 
     return;
 }
 
-static void launch_ray(long double intersect[2], int ray[4], Map *map)
+static int launch_ray(long double intersect[2], int ray[4], Map *map)
 {
 
     long double newtersect[2];
@@ -71,6 +71,22 @@ static void launch_ray(long double intersect[2], int ray[4], Map *map)
             intersect[1] = newtersect[1];
         }
     }
+    return normin;
+}
+
+static void render_ray(FrameBuffer *fbuffer, long double norm, int i, int wall_height)
+{
+
+    int height = wall_height/sqrt(norm);
+
+    norm = (height/(long double)fbuffer->height)*255;
+    norm = norm > 255 ? 255 : norm;
+    norm = norm < 0 ? 0 : norm;
+
+    draw_line(fbuffer, (int[2]){i, (fbuffer->height-height)/2.0},
+                       (int[2]){i, fbuffer->height/2.0+height/2.0},
+                  (char[4]){norm, norm, norm, 255});
+
     return;
 }
 
@@ -79,26 +95,28 @@ void RenderRays(FrameBuffer *fbuffer, Player *player, Map *map)
     long double angle = player->angle - player->FOV/2.0;
     int ray[4];
     long double intersect[2];
+    long double norm;
 
     for (int i = 0; i < player->ray_count; i++) {
 
         ray[0] = player->pos[0];
         ray[1] = player->pos[1];
-        ray[2] = player->pos[0] + cos(angle) * 600;
-        ray[3] = player->pos[1] + sin(angle) * 600;
+        ray[2] = player->pos[0] + cos(angle) * 120000;
+        ray[3] = player->pos[1] + sin(angle) * 120000;
 
         angle += player->ray_step;
-        launch_ray(intersect, ray, map);
+        norm = launch_ray(intersect, ray, map);
 
         /*draw_line(fbuffer, (int[2]){ray[0], ray[1]},
                            (int[2]){ray[2], ray[3]},
                   (char[4]){122, 122, 122, 255});*/
 
-        if (intersect[0] != intersect[0]) {
+        if (norm > norm) {
             continue;
         }
 
-        draw_circle(fbuffer, (int)intersect[0], (int)intersect[1], 5, (char[4]){0, 0, 255, 255});
+        //draw_circle(fbuffer, (int)intersect[0], (int)intersect[1], 4, (char[4]){0, 0, 255, 255});
+        render_ray(fbuffer, norm, i, 15000);
     }
 
     return;

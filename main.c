@@ -24,30 +24,30 @@
 //Multi(threading/processing)
 //Rooms
 
-FrameBuffer *new_frame_buffer(int width, int heigth)
+FrameBuffer *new_frame_buffer(int width, int height)
 {
     FrameBuffer *fbuffer = malloc(sizeof(FrameBuffer));
 
-    fbuffer->pixels = malloc(32*width*heigth);
+    fbuffer->pixels = malloc(32*width*height);
     fbuffer->width = width;
-    fbuffer->heigth = heigth;
+    fbuffer->height = height;
 
     fbuffer->size[0] = width;
-    fbuffer->size[1] = heigth;
+    fbuffer->size[1] = height;
 
     return fbuffer;
 }
 
 void clear_buffer(FrameBuffer *fbuffer)
 {
-    memset((fbuffer->pixels), 55, (fbuffer->width*fbuffer->heigth*32));
+    memset((fbuffer->pixels), 55, (fbuffer->width*fbuffer->height*32));
 }
 
 int main()
 {
     const int screen_size[2]={1500, 700};
 
-    Player *player = new_player(750, 350, 5, 120, screen_size[0]);
+    Player *player = new_player(0, 200, 5, 120, screen_size[0]);
     Map *map = new_map();
 
     sfVideoMode mode = {screen_size[0], screen_size[1], 32};
@@ -77,13 +77,15 @@ int main()
 
         UpdatePlayer(player, (int [2]){(sfKeyboard_isKeyPressed(sfKeyLeft) - sfKeyboard_isKeyPressed(sfKeyRight)),
                                        (sfKeyboard_isKeyPressed(sfKeyUp) - sfKeyboard_isKeyPressed(sfKeyDown))},
-                     (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 2e-2);
+                     (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 21e-2);
 
         clear_buffer(fbuffer);
 
-        display_map(map, fbuffer);
-        display_player(player, fbuffer);
+        //display_map(map, fbuffer);
+        //display_player(player, fbuffer);
 
+        draw_rect(fbuffer, 0, 0, fbuffer->width, fbuffer->height/2, (char[4]){0, 255, 255, 255});
+        draw_rect(fbuffer, 0, fbuffer->height/2, fbuffer->width, fbuffer->height, (char[4]){22, 64, 22, 255});
         RenderRays(fbuffer, player, map);
 
         sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);

@@ -16,7 +16,7 @@ void draw_rect(FrameBuffer *fbuffer, int xpos, int ypos,
         for (int x = xpos; x < width + xpos; x++){
         
             if (x < 0  || x >= (int)(fbuffer->width) ||
-                y >= (int)(fbuffer->heigth) || y < 0) {
+                y >= (int)(fbuffer->height) || y < 0) {
                 continue;
             }
 
@@ -37,7 +37,7 @@ void draw_circle(FrameBuffer *fbuffer, int xpos, int ypos,
         for (int x = xpos; x < radius + xpos; x++){
         
             if (x < 0  || x >= (int)(fbuffer->width) ||
-                y >= (int)(fbuffer->heigth) || y < 0 ||
+                y >= (int)(fbuffer->height) || y < 0 ||
                 square(x-(xpos + radius/2)) +
                 square(y-(ypos + radius/2)) >= square(radius/2)){
                 continue;
@@ -64,7 +64,7 @@ void draw_line(FrameBuffer *fbuffer, int p0[2], int p1[2], char color[4])
     for (int i = 0; i < norm + 1; i++) {
 
         if ((int)x >= 0 && (int)x < fbuffer->width &&
-            (int)y >= 0 && (int)y < fbuffer->heigth) {
+            (int)y >= 0 && (int)y < fbuffer->height) {
             for (int i = 0; i < 4; i++) {
                 (fbuffer->pixels)[((int)x+(int)y*(fbuffer->width))*4+i]=color[i];
             }
