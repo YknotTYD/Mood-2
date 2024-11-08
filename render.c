@@ -49,7 +49,6 @@ static void load_intersection(long double intersect[2],
 
 static int launch_ray(long double intersect[2], int ray[4], Map *map)
 {
-
     long double newtersect[2];
     long double norm;
     long double normin = 1.0/0.0;
@@ -85,7 +84,7 @@ static void render_ray(FrameBuffer *fbuffer, long double norm, int i, int wall_h
 
     draw_line(fbuffer, (int[2]){i, (fbuffer->height-height)/2.0},
                        (int[2]){i, fbuffer->height/2.0+height/2.0},
-                  (char[4]){norm, norm, norm, 255});
+                  (char[4]){122, norm, norm, 255});
 
     return;
 }
@@ -101,27 +100,19 @@ void RenderRays(FrameBuffer *fbuffer, Player *player, Map *map)
 
         ray[0] = player->pos[0];
         ray[1] = player->pos[1];
-        ray[2] = player->pos[0] + cos(angle) * 120000;
-        ray[3] = player->pos[1] + sin(angle) * 120000;
+        ray[2] = ray[0] + cos(angle) * 1200;
+        ray[3] = ray[1] + sin(angle) * 1200;
 
         angle += player->ray_step;
         norm = launch_ray(intersect, ray, map);
-
-        /*draw_line(fbuffer, (int[2]){ray[0], ray[1]},
-                           (int[2]){ray[2], ray[3]},
-                  (char[4]){122, 122, 122, 255});*/
 
         if (norm > norm) {
             continue;
         }
 
-        //+ 0*cos(((i - player->ray_count)/(long double)player->ray_count)*3.1415926535897932384626433832795028841
-        //draw_circle(fbuffer, (int)intersect[0], (int)intersect[1], 4, (char[4]){0, 0, 255, 255});
-
-        render_ray(fbuffer, sqrt(norm) * cos((player->ray_count / 2.0 - i) / ((long double)player->ray_count/2.0) *
-                                             player->FOV/2.0), i, 15000);
+        norm = sqrt(norm) * cos((player->ray_count / 2.0 - i) / ((long double)player->ray_count/2.0) * player->FOV/2.0);
+        render_ray(fbuffer, sqrt(norm), i, 3000);
     }
-    printf("\n\n");
 
     return;
 }

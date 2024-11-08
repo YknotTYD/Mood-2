@@ -26,6 +26,8 @@
 //Rooms
 //store cos sin etc...
 //display fps
+//add transparency
+//add light?
 
 FrameBuffer *new_frame_buffer(int width, int height)
 {
@@ -43,7 +45,7 @@ FrameBuffer *new_frame_buffer(int width, int height)
 
 void clear_buffer(FrameBuffer *fbuffer)
 {
-    memset((fbuffer->pixels), 55, (fbuffer->width*fbuffer->height*32));
+    memset((fbuffer->pixels), 0, (fbuffer->width*fbuffer->height*32));
 }
 
 int main()
@@ -67,7 +69,11 @@ int main()
     fbuffer = new_frame_buffer(screen_size[0], screen_size[1]);
     texture = sfTexture_create(screen_size[0], screen_size[1]);
     sprite = sfSprite_create();
-    
+
+    sfTexture *brick = sfTexture_createFromFile("brick.jpg", 0);
+    sfSprite* brick_sprite = sfSprite_create();
+    sfSprite_setTexture(brick_sprite, brick, sfTrue);
+
     srand(time(NULL));
 
     while (sfRenderWindow_isOpen(window))
@@ -80,7 +86,7 @@ int main()
 
         UpdatePlayer(player, (int [2]){(sfKeyboard_isKeyPressed(sfKeyLeft) - sfKeyboard_isKeyPressed(sfKeyRight)),
                                        (sfKeyboard_isKeyPressed(sfKeyUp) - sfKeyboard_isKeyPressed(sfKeyDown))},
-                     (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 21e-2);
+                     (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 11e-2);
 
         clear_buffer(fbuffer);
 
