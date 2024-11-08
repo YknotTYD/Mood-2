@@ -48,7 +48,7 @@ int main()
     const int screen_size[2]={1500, 700};
 
     Player *player = new_player(750, 350, 5, 120, screen_size[0]);
-
+    Map *map = new_map();
 
     sfVideoMode mode = {screen_size[0], screen_size[1], 32};
     sfRenderWindow* window;
@@ -80,6 +80,7 @@ int main()
                      (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 6e-2);
 
         clear_buffer(fbuffer);
+        display_map(map, fbuffer);
         display_player(player, fbuffer);
 
         sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);
@@ -94,6 +95,7 @@ int main()
     sfRenderWindow_destroy(window);
 
     free(player);
+    free(map);
 
     return 0;
 }
