@@ -81,10 +81,10 @@ int main()
 
         clear_buffer(fbuffer);
 
-        RenderRays(fbuffer, player, map);
-
         display_map(map, fbuffer);
         display_player(player, fbuffer);
+
+        RenderRays(fbuffer, player, map);
 
         sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);
         sfSprite_setTexture(sprite, texture, sfFalse);

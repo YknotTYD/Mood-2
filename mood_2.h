@@ -39,5 +39,6 @@ void UpdatePlayer(Player *player, int movect[2], long double angle_offset);
 Map *new_map();
 void display_map(Map *map, FrameBuffer *fbuffer);
 void RenderRays(FrameBuffer *fbuffer, Player *player, Map *map);
+long double square(long double n);
 
 #endif

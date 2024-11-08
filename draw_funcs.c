@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdio.h>
 
-static int square(double n)
+long double square(long double n)
 {
     return n * n;
 }

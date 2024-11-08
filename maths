@@ -5,7 +5,7 @@
 s * (x2 - x1) - t * (x4 - x3) = x3 - x1
 s * (y2 - y1) - t * (y4 - y3) = y3 - y1
 
-intersect = (x1 + s * (x2 - x1), y1 + s * (y2 - y1))
+intersect = (x1 + s * (x2 - x1), y1 + s * (y2 - y1)) if 0<=(s, t)<=1
 
 s * a - t * b = c
 s * d - t * e = f

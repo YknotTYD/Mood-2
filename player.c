@@ -7,16 +7,19 @@
 
 void display_player(Player *player, FrameBuffer *fbuffer)
 {
-    long double angle = player->angle - player->FOV/2 * 0;
+    long double angle = player->angle - player->FOV/2;
 
-    for (int i = 0; i < player->ray_count; i++) {
-        draw_line(fbuffer, (int[2]){player->pos[0], player->pos[1]},
-            (int[2]){player->pos[0] + cos(angle) * 500,
-            player->pos[1] + sin(angle) * 500},
-                  (char[4]){0, 255, 0, 255});
-        angle += player->ray_step;
-        break;
-    }
+    draw_line(fbuffer, (int[2]){player->pos[0], player->pos[1]},
+        (int[2]){player->pos[0] + cos(angle) * 5000,
+        player->pos[1] + sin(angle) * 5000},
+        (char[4]){0, 255, 0, 255});
+
+    angle += player->FOV;
+
+    draw_line(fbuffer, (int[2]){player->pos[0], player->pos[1]},
+        (int[2]){player->pos[0] + cos(angle) * 500000,
+        player->pos[1] + sin(angle) * 500000},
+        (char[4]){0, 255, 0, 255});
     
     draw_circle(fbuffer, player->pos[0], player->pos[1], 20, (char[4]){255, 0, 0, 255});
 
@@ -28,7 +31,7 @@ Player *new_player(long double x, long double y, long double speed, int FOV, int
     Player *player = malloc(sizeof(Player));
 
     player->angle = 0;
-    player->FOV = FOV;
+    player->FOV = (FOV / 180.0) * 3.1415926535897932384626433832795028841;
     player->ray_count = ray_count;
     player->ray_step = (FOV / (long double)(ray_count * 180)) * 3.1415926535897932384626433832795028841L;
 
