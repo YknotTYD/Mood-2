@@ -77,7 +77,7 @@ static int launch_ray(long double intersect[2], int ray[4], Map *map)
 static void render_ray(FrameBuffer *fbuffer, long double norm, int i, int wall_height)
 {
 
-    int height = wall_height/sqrt(norm);
+    int height = wall_height/norm;
 
     norm = (height/(long double)fbuffer->height)*255;
     norm = norm > 255 ? 255 : norm;
@@ -115,9 +115,13 @@ void RenderRays(FrameBuffer *fbuffer, Player *player, Map *map)
             continue;
         }
 
+        //+ 0*cos(((i - player->ray_count)/(long double)player->ray_count)*3.1415926535897932384626433832795028841
         //draw_circle(fbuffer, (int)intersect[0], (int)intersect[1], 4, (char[4]){0, 0, 255, 255});
-        render_ray(fbuffer, norm, i, 15000);
+
+        render_ray(fbuffer, sqrt(norm) * cos((player->ray_count / 2.0 - i) / ((long double)player->ray_count/2.0) *
+                                             player->FOV/2.0), i, 15000);
     }
+    printf("\n\n");
 
     return;
 }

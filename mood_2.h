@@ -16,7 +16,7 @@ typedef struct Player {
     long double pos[2];
     char color[4];
     long double angle;
-    int FOV;
+    long double FOV;
     int ray_count;
     long double ray_step;
     long double speed;

@@ -11,6 +11,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include "mood_2.h"
+#include <stdio.h>
 
 //draw fbuff
 //put fbuff in text
@@ -23,6 +24,8 @@
 
 //Multi(threading/processing)
 //Rooms
+//store cos sin etc...
+//display fps
 
 FrameBuffer *new_frame_buffer(int width, int height)
 {
@@ -80,6 +83,8 @@ int main()
                      (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 21e-2);
 
         clear_buffer(fbuffer);
+
+        //printf("%i", *sfMouse_getPosition(window)[0]);
 
         //display_map(map, fbuffer);
         //display_player(player, fbuffer);
