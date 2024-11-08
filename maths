@@ -1,0 +1,55 @@
+//maths
+
+@https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments
+
+s * (x2 - x1) - t * (x4 - x3) = x3 - x1
+s * (y2 - y1) - t * (y4 - y3) = y3 - y1
+
+intersect = (x1 + s * (x2 - x1), y1 + s * (y2 - y1))
+
+s * a - t * b = c
+s * d - t * e = f
+
+c * e - f * b = (s * a - t * b) * e - (s * d - t * e) * b
+c * e - f * b = s * ae - t * be + -s * db + t * eb
+s * ae + -s * db = c * e - f * b
+s * ae -s * db = c * e - f * b
+s * (ae - db) = c * e - f * b
+s  = (c * e - f * b) / (a * e - d * b)
+
+c * d - f * a = (s * a - t * b) * d - (s * d - t * e) * a
+c * d - f * a = s * ad - t * bd - s * da + t * ea
+c * d - f * a = - t * bd + t * ea
+- t * bd + t * ea = c * d - f * a
+t * (-bd + ea) = c * d - f * a
+t  = (c * d - f * a) / (-b * d + e * a)
+
+s  = (c * e - f * b) / (a * e - d * b)
+t  = (c * d - f * a) / (a * e - d * b)
+
+//impl
+
+d = (a * e - d * b)
+
+s = (c * e - f * b) / d
+t = (c * d - f * a) / d
+
+if 0<=(s0, t0)<=1 -> isvalid
+
+intersect = (x1 + s * a, y1 + s * d)
+
+//speed
+
+s = (c * e - f * b)
+t = (c * d - f * a)
+
+if 0<=(s0, t0)<=ABS(d) -> isvalid
+
+//form
+
+a = x2 - x1
+b = x4 - x3
+c = x3 - x1
+d = y2 - y1
+e = y4 - y3
+f = y3 - y1

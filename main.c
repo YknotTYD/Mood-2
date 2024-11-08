@@ -77,9 +77,12 @@ int main()
 
         UpdatePlayer(player, (int [2]){(sfKeyboard_isKeyPressed(sfKeyLeft) - sfKeyboard_isKeyPressed(sfKeyRight)),
                                        (sfKeyboard_isKeyPressed(sfKeyUp) - sfKeyboard_isKeyPressed(sfKeyDown))},
-                     (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 6e-2);
+                     (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 2e-2);
 
         clear_buffer(fbuffer);
+
+        RenderRays(fbuffer, player, map);
+
         display_map(map, fbuffer);
         display_player(player, fbuffer);
 
