@@ -17,6 +17,12 @@
 //link text to sprite
 //draw sprite on window
 //flip
+//
+//sfKeyboard_isKeyPressed
+//sfKey<key>
+
+//Multi(threading/processing)
+//Rooms
 
 FrameBuffer *new_frame_buffer(int width, int heigth)
 {
@@ -41,21 +47,25 @@ int main()
 {
     const int screen_size[2]={1500, 700};
 
-    Player *player = new_player(222, 222, (char[4]){255, 0, 0, 255});
+    Player *player = new_player(750, 350, 5, 120, screen_size[0]);
 
-    srand(time(NULL));
 
     sfVideoMode mode = {screen_size[0], screen_size[1], 32};
     sfRenderWindow* window;
+    //sfWindow *mposwin;
     sfTexture* texture;
     sfSprite* sprite; 
     FrameBuffer *fbuffer;
     sfEvent event;
+    //int mouse_pos[2] = sfMouse_getPosition(window);
 
     window = sfRenderWindow_create(mode, "Mood 2", sfResize | sfClose, NULL);
+    //mposwin = sfWindow_create(mode, "Mood 2", sfResize | sfClose, NULL);
     fbuffer = new_frame_buffer(screen_size[0], screen_size[1]);
     texture = sfTexture_create(screen_size[0], screen_size[1]);
     sprite = sfSprite_create();
+    
+    srand(time(NULL));
 
     while (sfRenderWindow_isOpen(window))
     {
@@ -65,14 +75,14 @@ int main()
                 sfRenderWindow_close(window);
         }
 
-        //player->pos[0]++;
-        player->angle += 1e-2;
+        UpdatePlayer(player, (int [2]){(sfKeyboard_isKeyPressed(sfKeyLeft) - sfKeyboard_isKeyPressed(sfKeyRight)),
+                                       (sfKeyboard_isKeyPressed(sfKeyUp) - sfKeyboard_isKeyPressed(sfKeyDown))},
+                     (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 6e-2);
 
         clear_buffer(fbuffer);
-
         display_player(player, fbuffer);
 
-        sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);                         
+        sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);
         sfSprite_setTexture(sprite, texture, sfFalse);
         sfRenderWindow_clear(window, sfBlack);
         sfRenderWindow_drawSprite(window, sprite, NULL);
