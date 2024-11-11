@@ -29,10 +29,10 @@ t  = (c * d - f * a) / (a * e - d * b)
 
 //impl
 
-d = (a * e - d * b)
+delta = (a * e - d * b)
 
-s = (c * e - f * b) / d
-t = (c * d - f * a) / d
+s = (c * e - f * b) / delta
+t = (c * d - f * a) / delta
 
 if 0<=(s0, t0)<=1 -> isvalid
 
@@ -53,7 +53,3 @@ c = x3 - x1
 d = y2 - y1
 e = y4 - y3
 f = y3 - y1
-
-////tan
-
-si
