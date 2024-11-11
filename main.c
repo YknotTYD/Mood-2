@@ -68,13 +68,13 @@ int main()
     //sfWindow *mposwin;
     sfTexture* texture;
     sfSprite* sprite; 
-    FrameBuffer *fbuffer;
+    //FrameBuffer *fbuffer;
     sfEvent event;
     //int mouse_pos[2] = sfMouse_getPosition(window);
 
     window = sfRenderWindow_create(mode, "Mood 2", sfResize | sfClose, NULL);
     //mposwin = sfWindow_create(mode, "Mood 2", sfResize | sfClose, NULL);
-    fbuffer = new_frame_buffer(screen_size[0], screen_size[1]);
+    //fbuffer = new_frame_buffer(screen_size[0], screen_size[1]);
     texture = sfTexture_create(screen_size[0], screen_size[1]);
     sprite = sfSprite_create();
 
@@ -102,7 +102,7 @@ int main()
         //draw_rect(fbuffer, 0, 0, fbuffer->width, fbuffer->height/2, (char[4]){0, 255, 255, 255});
         //draw_rect(fbuffer, 0, fbuffer->height/2, fbuffer->width, fbuffer->height, (char[4]){22, 64, 22, 255});
 
-        sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);
+        //sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);
 
         sfSprite_setTexture(sprite, texture, sfFalse);
         sfRenderWindow_clear(window, sfBlack);
