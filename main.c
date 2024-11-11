@@ -28,6 +28,7 @@
 //display fps
 //add transparency
 //add light?
+//remove framebuffer update
 
 FrameBuffer *new_frame_buffer(int width, int height)
 {
@@ -48,9 +49,16 @@ void clear_buffer(FrameBuffer *fbuffer)
     memset((fbuffer->pixels), 0, (fbuffer->width*fbuffer->height*32));
 }
 
+void display_brick_column(sfRenderWindow *window, sfSprite **sprites, int col_index, int x, int height)
+{
+    sfSprite_setPosition(sprites[col_index], (sfVector2f){col_index, x});
+    sfSprite_setScale(sprites[col_index], (sfVector2f){1, height});
+    sfRenderWindow_drawSprite(window, sprites[col_index], 0);
+}
+
 int main()
 {
-    const int screen_size[2]={1500, 700};
+    int screen_size[2]={1500, 700};
 
     Player *player = new_player(0, 200, 5, 120, screen_size[0]);
     Map *map = new_map();
@@ -70,10 +78,6 @@ int main()
     texture = sfTexture_create(screen_size[0], screen_size[1]);
     sprite = sfSprite_create();
 
-    sfTexture *brick = sfTexture_createFromFile("brick.jpg", 0);
-    sfSprite* brick_sprite = sfSprite_create();
-    sfSprite_setTexture(brick_sprite, brick, sfTrue);
-
     srand(time(NULL));
 
     while (sfRenderWindow_isOpen(window))
@@ -88,21 +92,27 @@ int main()
                                        (sfKeyboard_isKeyPressed(sfKeyUp) - sfKeyboard_isKeyPressed(sfKeyDown))},
                      (sfKeyboard_isKeyPressed(sfKeyD) - sfKeyboard_isKeyPressed(sfKeyQ)) * 11e-2);
 
-        clear_buffer(fbuffer);
+        //clear_buffer(fbuffer);
 
         //printf("%i", *sfMouse_getPosition(window)[0]);
 
         //display_map(map, fbuffer);
         //display_player(player, fbuffer);
 
-        draw_rect(fbuffer, 0, 0, fbuffer->width, fbuffer->height/2, (char[4]){0, 255, 255, 255});
-        draw_rect(fbuffer, 0, fbuffer->height/2, fbuffer->width, fbuffer->height, (char[4]){22, 64, 22, 255});
-        RenderRays(fbuffer, player, map);
+        //draw_rect(fbuffer, 0, 0, fbuffer->width, fbuffer->height/2, (char[4]){0, 255, 255, 255});
+        //draw_rect(fbuffer, 0, fbuffer->height/2, fbuffer->width, fbuffer->height, (char[4]){22, 64, 22, 255});
 
         sfTexture_updateFromPixels(texture, fbuffer->pixels, screen_size[0], screen_size[1], 0, 0);
+
         sfSprite_setTexture(sprite, texture, sfFalse);
         sfRenderWindow_clear(window, sfBlack);
         sfRenderWindow_drawSprite(window, sprite, NULL);
+        RenderRays(window, player, map, screen_size);
+
+        /*for (int i = 0; i < width; i++) {
+            sfSprite_setPosition(sprites[i], (sfVector2f){i, i});
+            sfRenderWindow_drawSprite(window, sprites[i], 0);
+        }*/
         sfRenderWindow_display(window);
     }
 
@@ -111,6 +121,11 @@ int main()
     sfRenderWindow_destroy(window);
 
     free(player);
+
+    for (int i = 0; i < map->texture->width; i++) {
+        free(map->texture->cuts[i]);
+    }
+    free(map->texture);
     free(map);
 
     return 0;

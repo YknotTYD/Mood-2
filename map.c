@@ -3,6 +3,32 @@
 #include "mood_2.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <SFML/Graphics/Sprite.h>
+#include <SFML/Graphics/Texture.h>
+
+static Texture *load_texture(const char *filepath)
+{
+    Texture *texture = malloc(sizeof(Texture));
+
+    sfTexture *temp = sfTexture_createFromFile(filepath, 0);
+    sfSprite* temp_sprite = sfSprite_create();
+    sfSprite_setTexture(temp_sprite, temp, sfTrue);
+
+    texture->width = sfSprite_getTextureRect(temp_sprite).width;
+    texture->height = sfSprite_getTextureRect(temp_sprite).height;
+
+    texture->cuts = malloc(sizeof(sfSprite*) * texture->width);
+
+    for (int i = 0; i < texture->width; i++) {
+        temp = sfTexture_createFromFile(filepath, &(sfIntRect){i, 0, 1, texture->height});
+        texture->cuts[i] = malloc(10000);
+        texture->cuts[i] = sfSprite_create();
+
+        sfSprite_setTexture(texture->cuts[i], temp, sfTrue);
+    }
+
+    return texture;
+}
 
 Map *new_map()
 {
@@ -35,6 +61,8 @@ Map *new_map()
     map->lines[17][0] = 776;map->lines[17][1] = 677;map->lines[17][2] = 686;map->lines[17][3] = 174;
     map->lines[18][0] = 597;map->lines[18][1] = 629;map->lines[18][2] = 830;map->lines[18][3] = 231;
     map->lines[19][0] = 617;map->lines[19][1] = 670;map->lines[19][2] = 1280;map->lines[19][3] = 486;
+
+    map->texture = load_texture("brick.jpg");
 
     return map;
 }

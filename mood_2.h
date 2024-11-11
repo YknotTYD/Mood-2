@@ -1,5 +1,7 @@
 //mood_2.h
 
+#include <SFML/Graphics/RenderWindow.h>
+
 #define ABS(value) (((value) >= 0) ? (value) : (-1*(value)))
 
 #ifndef HEADERDIG
@@ -22,9 +24,17 @@ typedef struct Player {
     long double speed;
 } Player;
 
+
+typedef struct Texture {
+    int width;
+    int height;
+    sfSprite **cuts;
+} Texture;
+
 typedef struct Map {
     int line_count;
     int **lines;
+    Texture *texture;
 } Map;
 
 char *read_file(char *filename);
@@ -38,7 +48,7 @@ Player *new_player(long double x, long double y, long double speed, int FOV, int
 void UpdatePlayer(Player *player, int movect[2], long double angle_offset);
 Map *new_map();
 void display_map(Map *map, FrameBuffer *fbuffer);
-void RenderRays(FrameBuffer *fbuffer, Player *player, Map *map);
+void RenderRays(sfRenderWindow *window, Player *player, Map *map, int screen_size[2]);
 long double square(long double n);
 
 #endif

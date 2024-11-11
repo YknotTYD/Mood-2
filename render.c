@@ -3,7 +3,12 @@
 #include "mood_2.h"
 #include <math.h>
 #include <stdlib.h>
+#include <SFML/Graphics/RenderWindow.h>
+#include <SFML/Graphics/Sprite.h>
+#include <SFML/Graphics/Texture.h>
 #include <stdio.h>
+
+//wall above screen
 
 static int delta_cmp(long double n, long double delta)
 {
@@ -47,7 +52,7 @@ static void load_intersection(long double intersect[2],
     return;
 }
 
-static int launch_ray(long double intersect[2], int ray[4], Map *map)
+static int launch_ray(long double intersect[2], int ray[4], Map *map, int *line_index)
 {
     long double newtersect[2];
     long double norm;
@@ -68,40 +73,51 @@ static int launch_ray(long double intersect[2], int ray[4], Map *map)
             normin = norm;
             intersect[0] = newtersect[0];
             intersect[1] = newtersect[1];
+            *line_index = i;
         }
     }
     return normin;
 }
 
-static void render_ray(FrameBuffer *fbuffer, long double norm, int i, int wall_height)
+static void render_ray(sfRenderWindow *window, long double norm, int i, int ray_hit, int wall_height, int screen_size[2], Map *map)
 {
 
     int height = wall_height/norm;
 
-    norm = (height/(long double)fbuffer->height)*255;
+    norm = (height/(long double)screen_size[1])*255;
     norm = norm > 255 ? 255 : norm;
     norm = norm < 0 ? 0 : norm;
 
-    draw_line(fbuffer, (int[2]){i, (fbuffer->height-height)/2.0},
-                       (int[2]){i, fbuffer->height/2.0+height/2.0},
-                  (char[4]){122, norm, norm, 255});
+    /*draw_line(fbuffer, (int[2]){i, (screen_size[1]-height)/2.0},
+                       (int[2]){i, screen_size[1]/2.0+height/2.0},
+                  (char[4]){122, norm, norm, 255});*/
+
+    //scale * width = screen_size[1]/2.0+height/2.0 - (screen_size[1]-height)/2.0
+    //scale * width = screen_size[1]/2.0+height/2.0 - screen_size[1] / 2.0 + height /2.0
+    //scale * width = height
+    //scale = height / width
+
+    sfSprite_setPosition(map->texture->cuts[ray_hit], (sfVector2f){i, (screen_size[1] - height) / 2.0});
+    sfSprite_setScale(map->texture->cuts[ray_hit], (sfVector2f){1, height / (long double)map->texture->width});
+    sfRenderWindow_drawSprite(window, map->texture->cuts[ray_hit], NULL);
 
     return;
 }
 
-void RenderRays(FrameBuffer *fbuffer, Player *player, Map *map)
+void RenderRays(sfRenderWindow *window, Player *player, Map *map, int screen_size[2])
 {
     long double angle = player->angle - player->FOV/2.0;
     int ray[4];
     long double intersect[2];
     long double norm;
+    int line_index;
 
-    for (int i = 0; i < player->ray_count; i++) {
+    /*for (int i = 0; i < player->ray_count; i++) {
 
         ray[0] = player->pos[0];
         ray[1] = player->pos[1];
-        ray[2] = ray[0] + cos(angle) * 1200;
-        ray[3] = ray[1] + sin(angle) * 1200;
+        ray[2] = ray[0] + cos(angle) * 120000;
+        ray[3] = ray[1] + sin(angle) * 120000;
 
         angle += player->ray_step;
         norm = launch_ray(intersect, ray, map);
@@ -112,7 +128,57 @@ void RenderRays(FrameBuffer *fbuffer, Player *player, Map *map)
 
         norm = sqrt(norm) * cos((player->ray_count / 2.0 - i) / ((long double)player->ray_count/2.0) * player->FOV/2.0);
         render_ray(fbuffer, sqrt(norm), i, 3000);
+    }*/
+
+    for (int i = 0; i < player->ray_count; i++) {
+
+        intersect[0] = cos(player->angle) / 1.0;
+        intersect[1] = sin(player->angle) / 1.0;
+
+        intersect[0] += cos(player->angle + 3.14159265/2.0) * ((i - player->ray_count/2.0) / (long double)(player->ray_count));
+        intersect[1] += sin(player->angle + 3.14159265/2.0) * ((i - player->ray_count/2.0) / (long double)(player->ray_count));
+
+        intersect[0] *= 12000;
+        intersect[1] *= 12000;
+
+        intersect[0] += player->pos[0];
+        intersect[1] += player->pos[1];
+    
+        //draw_circle(fbuffer, intersect[0], intersect[1], 10, (char[4]){255, 0, 255, 255});
+
+        ray[0] = player->pos[0];
+        ray[1] = player->pos[1];
+        ray[2] = intersect[0];
+        ray[3] = intersect[1];
+        //ray[2] = ray[0] + cos(angle) * 120000;
+        //ray[3] = ray[1] + sin(angle) * 120000;
+
+        angle += player->ray_step;
+        norm = launch_ray(intersect, ray, map, &line_index);
+
+        if (norm > norm) {
+            continue;
+        }
+
+        norm = sqrt(norm);// * cos((player->ray_count / 2.0 - i) / ((long double)player->ray_count/2.0) * player->FOV/2.0);
+        norm /= 5;
+        /*long double center[2];
+        center[0] = map->lines[line_index][0] + (map->lines[line_index][2] - map->lines[line_index][0]) / 2.0;
+        center[1] = map->lines[line_index][1] + (map->lines[line_index][3] - map->lines[line_index][1]) / 2.0;*/
+
+        //long double trashsize = sqrt(square(center[0] - map->lines[line_index][0]) + square(center[1] - map->lines[line_index][1]));
+        int temptrash = (sqrt(square(intersect[0] - map->lines[line_index][0]) + square(intersect[1] - map->lines[line_index][1])));
+            //* map->texture->width) / map->texture->width;//trashsize;
+        temptrash %= map->texture->width;
+        render_ray(window, sqrt(norm), i, temptrash, 3000, screen_size, map);
+        //draw_circle(fbuffer, ray[0], ray[1], 10, (char[4]){255, 0, 255, 255});
     }
+    //draw_circle(fbuffer, player->pos[0], player->pos[1], 10, (char[4]){255, 0, 255, 255});
 
     return;
 }
+
+
+
+
+
