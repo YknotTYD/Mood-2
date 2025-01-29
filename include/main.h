@@ -7,6 +7,7 @@
 #include <math.h>
 
 #ifndef MAIN_HEADER
+
     #define MAIN_HEADER
     #define UNPACK2(arr) arr[0], arr[1]
     #define UNPACK4(arr) (arr)[0], (arr)[1], (arr)[2], (arr)[3]
@@ -17,6 +18,7 @@
     #define PLAYER_ANGULAR_SPEED 0.07
     #define RAY_LEN 1e+5
     #define DEG_TO_RAD(angle) (((angle) / 180.0) * 3.1415926535897932384626433832795028841)
+    #define ABS(n) ((n) > 0 ? (n): -(n))
 
 typedef struct {
     long double pos[2];

@@ -1,4 +1,4 @@
-//maths
+//maths.txt
 
 @https://en.wikipedia.org/wiki/Intersection_(geometry)#Two_line_segments
 
