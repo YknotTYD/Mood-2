@@ -34,9 +34,10 @@ typedef struct {
     int *lines;
     int line_count;
     int quit;
+    int screen_size[2];
 } context_t;
 
-void init_player(player_t **player);
+void init_player(player_t **player, int ray_count);
 void render_player(context_t *context);
 void render_lines(context_t *context);
 void update_player(context_t *context);

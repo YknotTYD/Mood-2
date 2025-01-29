@@ -3,6 +3,8 @@
 #include "../include/main.h"
 //#include <emscripten.h>
 
+//display FPS
+
 static double FPS = 120.0;
 static int screen_size[2]={1650, 900};
 //static const unsigned char *keyboard;
@@ -24,6 +26,9 @@ static void init_context(context_t *context)
     context->win = SDL_CreateWindow("Mood-2", 100, 75, UNPACK2(screen_size), SDL_WINDOW_SHOWN);
     context->ren = SDL_CreateRenderer(context->win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     context->quit = 0;
+
+    context->screen_size[0] = screen_size[0];
+    context->screen_size[1] = screen_size[1];
 
     context->lines = malloc(sizeof(int *) * 4 * 1);
     context->lines[0] = 222;
@@ -59,7 +64,7 @@ static void main_loop(context_t *context)
 int main(int argc, char **argv)
 {
     init_context(&context);
-    init_player(&context.player);
+    init_player(&context.player, screen_size[0]);
 
     (void)argc;
     (void)argv;

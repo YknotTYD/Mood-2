@@ -2,14 +2,14 @@
 
 #include "../include/main.h"
 
-void init_player(player_t **player)
+void init_player(player_t **player, int ray_count)
 {
     *player = malloc(sizeof(player_t));
     (*player)->pos[0] = 222;
     (*player)->pos[1] = 222;
     (*player)->angle = 3;
     (*player)->FOV = 120;
-    (*player)->ray_count = 250;
+    (*player)->ray_count = ray_count;
     (*player)->ray_step = DEG_TO_RAD((*player)->FOV) /
         (long double)(*player)->ray_count;
     return;
