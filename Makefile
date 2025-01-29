@@ -1,13 +1,52 @@
+##
+## EPITECH PROJECT, 2024
+## Chip8TYD
+## File description:
+## A Chip8 TYD Emulator;
+##
 
-all:
-	gcc -Wall -Wextra *.c -l csfml-graphics -l csfml-window -lm -o damien 
+SRC  = src/*.c
+LIBS = -l SDL2 -l m
+NAME = Mood2
+DEFAULTARGS  = ""
 
-run:
-	gcc -Wall -Wextra *.c -l csfml-graphics -l csfml-window -lm -o damien
-	./damien
-	rm damien
+compile:
+	@ gcc -g -Wall -Wextra $(SRC) $(LIBS) \
+		-o $(NAME)
 
-valgrind:
-	gcc -Wall -Wextra *.c -l csfml-graphics -l csfml-window -lm -o damien
-	valgrind -s --show-leak-kinds=none --track-origins=yes --leak-check=full --error-limit=no ./damien
-	rm damien
+compile_Ofast:
+	@ gcc -Ofast -Wall -Wextra $(SRC) $(LIBS) \
+		-o $(NAME)
+
+run: compile
+	@ ./$(NAME) $(DEFAULTARGS)
+	@ rm $(NAME)
+
+log: compile
+	@ ./$(NAME) $(DEFAULTARGS) > ~log
+	@ rm $(NAME)
+
+logless: compile
+	@ ./$(NAME) $(DEFAULTARGS) > ~log
+	@ rm $(NAME)
+	@ cat ~log | less
+	@rm ~log
+
+valgrind: compile
+	@valgrind -s --show-leak-kinds=none \
+		--track-origins=yes \
+		--leak-check=full \
+		--error-limit=no \
+	./$(NAME) $(DEFAULTROM)
+	@ rm $(NAME)
+
+clean:
+	@ rm -fr *.o
+
+fclean: clean
+	@ rm -f $(NAME)
+
+re: fclean compile
+
+kronk:
+	@ echo "Oh ouais."
