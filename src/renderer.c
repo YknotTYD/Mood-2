@@ -50,42 +50,14 @@ static void load_intersect(
     return;
 }
 
-static long double get_norm(
-    long double intersect[2],
-    long double pos[2],
-    long double angle
-) {
-    long double norm;
-    long double m;
-    long double p;
-
-    m = tan(angle + 3.1415926535897 / 2.0);
-    p = pos[1] - m * pos[0];
-
-    norm = ABS(m * intersect[0] - intersect[1] + p) / (long double)sqrt(m * m + 1);
-
-    /*int x = (intersect[0] + m * intersect[1] - m * p) / (m * m + 1);
-    int y = m * x + p;
-
-    SDL_RenderFillRect(context->ren, &(SDL_Rect){x, y, 2, 2});
-    SDL_RenderFillRect(context->ren, &(SDL_Rect){UNPACK2(intersect), 2, 2});*/
-
-    return norm;
-}
-
 static void process_ray(
     context_t *context, long double norm,
-    int lineindex, int ray_index,
-    long double intersect[2]
+    int lineindex, int ray_index, long double ray_angle
 ) {
     int height;
 
-    norm = get_norm(
-        intersect,
-        context->player->pos,
-        context->player->angle
-    );
-    height = 21000 / norm;
+    norm *= cos(context->player->angle - ray_angle);
+    height = WALLHEIGHT / norm;
 
     (void)lineindex;
     SDL_RenderDrawLine(
@@ -101,7 +73,7 @@ static void process_ray(
 
 static void launch_ray(
     int ray[4], context_t *context,
-    int ray_index
+    int ray_index, long double ray_angle
 ) {
     int *lines = context->lines;
     int line_count = context->line_count;
@@ -117,7 +89,7 @@ static void launch_ray(
             UNPACK4(ray),
             UNPACK4(LINE_INDEX(lines, i))
         );
-        if (intersect[0] > intersect[0]) {
+        if (intersect[0] != intersect[0]) {
             continue;
         }
         norm = square(intersect[0] - ray[0]) + square(intersect[1] - ray[1]);
@@ -132,7 +104,7 @@ static void launch_ray(
         return;
     }
 
-    process_ray(context, sqrt(normin), norminindex, ray_index, intersect);
+    process_ray(context, sqrt(normin), norminindex, ray_index, ray_angle);
 
     return;
 }
@@ -152,16 +124,8 @@ void render(context_t *context)
         ray[2] = player->pos[0] + cos(angle) * RAY_LEN;
         ray[3] = player->pos[1] + sin(angle) * RAY_LEN;
 
+        launch_ray(ray, context, ray_index, angle);
         angle += player->ray_step;
-
-        /*SDL_RenderDrawLine(
-            context->ren,
-            UNPACK4(ray)
-        );*/
-
-        //SDL_SetRenderDrawColor(context->ren, 255, 255, 0, 255);
-        launch_ray(ray, context, ray_index);
-        //SDL_SetRenderDrawColor(context->ren, 0, 0, 255, 255);
     }
     return;
 }

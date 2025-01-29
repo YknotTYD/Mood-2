@@ -50,8 +50,8 @@ static void main_loop(context_t *context)
     SDL_RenderClear(context->ren);
 
     render(context);
-    render_player(context);
-    render_lines(context);
+    //render_player(context);
+    //render_lines(context);
 
     SDL_RenderPresent(context->ren);
 

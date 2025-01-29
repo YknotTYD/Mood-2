@@ -12,13 +12,14 @@
     #define UNPACK2(arr) arr[0], arr[1]
     #define UNPACK4(arr) (arr)[0], (arr)[1], (arr)[2], (arr)[3]
     #define NOW (clock()/(double)CLOCKS_PER_SEC)
-    #define PLAYER_RADIUS 10
     #define LINE_INDEX(lines, n) (&(lines)[((n) * sizeof(int) * 4)])
+    #define DEG_TO_RAD(angle) (((angle) / 180.0) * 3.1415926535897932384626433832795028841)
+    #define ABS(n) ((n) > 0 ? (n): -(n))
+    #define PLAYER_RADIUS 10
     #define PLAYER_SPEED 7
     #define PLAYER_ANGULAR_SPEED 0.07
     #define RAY_LEN 1e+5
-    #define DEG_TO_RAD(angle) (((angle) / 180.0) * 3.1415926535897932384626433832795028841)
-    #define ABS(n) ((n) > 0 ? (n): -(n))
+    #define WALLHEIGHT 21000
 
 typedef struct {
     long double pos[2];
