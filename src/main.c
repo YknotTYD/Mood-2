@@ -8,6 +8,8 @@
 //make the rendering use shaders
 //use the ray hit angle to add shade
 //add a README
+//put everything into more files
+//clean up everything
 
 static int screen_size[2]={1650, 900};
 //static const unsigned char *keyboard;
