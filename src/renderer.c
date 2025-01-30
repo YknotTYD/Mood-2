@@ -71,6 +71,19 @@ static void process_ray(
     return;
 }
 
+static void process_color(context_t *context, int p0[2], long double p1[2])
+{
+    long double vect[2] = {p1[0] - p0[0], p1[1] - p0[1]};
+    long double norm = sqrt(square(vect[0]) + square(vect[1]));
+
+    norm *= 4.0;
+    norm = (int)norm % 255;
+
+    SDL_SetRenderDrawColor(context->ren, norm, 255 - norm, 0, 255);
+
+    return;
+}
+
 static void launch_ray(
     int ray[4], context_t *context,
     int ray_index, long double ray_angle
@@ -104,6 +117,7 @@ static void launch_ray(
         return;
     }
 
+    process_color(context, LINE_INDEX(lines, norminindex), intersect);
     process_ray(context, sqrt(normin), norminindex, ray_index, ray_angle);
 
     return;
@@ -112,7 +126,8 @@ static void launch_ray(
 void render(context_t *context)
 {
     player_t *player = context->player;
-    long double angle = player->angle - player->ray_step * player->ray_count / 2;
+    long double angle;
+    double plane;
     int ray[4];
 
     SDL_SetRenderDrawColor(context->ren, 255, 255, 0, 255);
@@ -124,8 +139,10 @@ void render(context_t *context)
         ray[2] = player->pos[0] + cos(angle) * RAY_LEN;
         ray[3] = player->pos[1] + sin(angle) * RAY_LEN;
 
+        plane = (2.0 * ray_index / (long double)(player->ray_count - 1) - 1.0);
+        angle = player->angle + atan(plane * tan(DEG_TO_RAD(player->FOV) / 2.0));
+
         launch_ray(ray, context, ray_index, angle);
-        angle += player->ray_step;
     }
     return;
 }
