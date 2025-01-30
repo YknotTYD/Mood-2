@@ -11,7 +11,7 @@ The much-anticipated sequel to the legendary <a href="https://yknottyd.itch.io/m
     <li><b><i>git clone</i></b> the repo</li>
     <li>run <b><i>make depends</i></b> to install the required dependencies;</li>
     <li>run <b><i>make</i></b> to compile the binary;</li>
-    <li>run the binary.</li>
+    <li>run <b><i>Mood2</i></b>.</li>
 </ul>
 
 </body>
