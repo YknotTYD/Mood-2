@@ -2,7 +2,7 @@
 <html>
 <body>
 
-<h1><b>Mood 2: A Raycaster Engine.</b></h1>
+<h1><b>Mood 2: A Raycasting Engine.</b></h1>
 The much-anticipated sequel to the legendary <a href="https://yknottyd.itch.io/mood">Mood</a>.
 
 <p>Written in C using SDL2.</p>
