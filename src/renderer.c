@@ -139,13 +139,13 @@ void render(context_t *context)
 
     for (int ray_index = 0; ray_index < player->ray_count; ray_index++) {
 
+        plane = (2.0 * ray_index / (long double)(player->ray_count - 1) - 1.0);
+        angle = player->angle + atan(plane * tan(DEG_TO_RAD(player->FOV) / 2.0));
+
         ray[0] = player->pos[0];
         ray[1] = player->pos[1];
         ray[2] = player->pos[0] + cos(angle) * RAY_LEN;
         ray[3] = player->pos[1] + sin(angle) * RAY_LEN;
-
-        plane = (2.0 * ray_index / (long double)(player->ray_count - 1) - 1.0);
-        angle = player->angle + atan(plane * tan(DEG_TO_RAD(player->FOV) / 2.0));
 
         launch_ray(ray, context, ray_index, angle);
     }
