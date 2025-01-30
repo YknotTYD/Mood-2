@@ -6,7 +6,7 @@
 ##
 
 SRC  = src/*.c
-LIBS = -l SDL2 -l m
+LIBS = -l SDL2 -l SDL2_ttf -l m
 NAME = Mood2
 DEFAULTARGS  = ""
 
@@ -14,9 +14,8 @@ compile:
 	@ gcc -g -Wall -Wextra $(SRC) $(LIBS) \
 		-o $(NAME)
 
-compile_Ofast:
-	@ gcc -Ofast -Wall -Wextra $(SRC) $(LIBS) \
-		-o $(NAME)
+depends:
+	sudo apt install libsdl2-dev libsdl2-ttf-dev
 
 run: compile
 	@ ./$(NAME) $(DEFAULTARGS)

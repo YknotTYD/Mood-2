@@ -1,6 +1,7 @@
 //main.h
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
@@ -17,9 +18,10 @@
     #define ABS(n) ((n) > 0 ? (n): -(n))
     #define PLAYER_RADIUS 10
     #define PLAYER_SPEED 7
-    #define PLAYER_ANGULAR_SPEED 0.05
+    #define PLAYER_ANGULAR_SPEED 0.06
     #define RAY_LEN 1e+5
     #define WALLHEIGHT 21000
+    #define FPS 120
 
 typedef struct {
     long double pos[2];
@@ -34,10 +36,12 @@ typedef struct {
     SDL_Renderer *ren;
     SDL_Event events;
     player_t *player;
+    TTF_Font *font;
     int *lines;
     int line_count;
     int quit;
     int screen_size[2];
+    long double frames[FPS];
 } context_t;
 
 void init_player(player_t **player, int ray_count);
