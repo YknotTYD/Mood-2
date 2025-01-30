@@ -94,6 +94,7 @@ static void launch_ray(
     long double intersect[2];
     long double norm = 0;
     long double normin = 1.0 / 0.0;
+    long double mintersect[2] = {0.0 / 0.0, 0.0 / 0.0};
     int norminindex = -1;
 
     for (int i = 0; i < line_count; i++) {
@@ -111,14 +112,18 @@ static void launch_ray(
         }
         normin = norm;
         norminindex = i;
+        mintersect[0] = intersect[0];
+        mintersect[1] = intersect[1];
     }
 
     if (norminindex == -1) {
         return;
     }
 
-    process_color(context, LINE_INDEX(lines, norminindex), intersect);
+    process_color(context, LINE_INDEX(lines, norminindex), mintersect);
     process_ray(context, sqrt(normin), norminindex, ray_index, ray_angle);
+    //SDL_SetRenderDrawColor(context->ren, 255, 0, 0, 255);
+    //SDL_RenderDrawLine(context->ren, UNPACK2(mintersect), UNPACK2(context->player->pos));
 
     return;
 }

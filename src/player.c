@@ -7,8 +7,8 @@ void init_player(player_t **player, int ray_count)
     *player = malloc(sizeof(player_t));
     (*player)->pos[0] = 352.0;
     (*player)->pos[1] = 352.0;
-    (*player)->angle = 3;
-    (*player)->FOV = 120;
+    (*player)->angle = 3.0;
+    (*player)->FOV = 120.0;
     (*player)->ray_count = ray_count;
     (*player)->ray_step = DEG_TO_RAD((*player)->FOV) /
         (long double)(*player)->ray_count;

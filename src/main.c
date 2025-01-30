@@ -4,6 +4,9 @@
 //#include <emscripten.h>
 
 //display FPS
+//cache every (ray/render)related cacheable thing
+//make the rendering use shaders
+//use the ray hit angle to add shade
 
 static double FPS = 120.0;
 static int screen_size[2]={1650, 900};
@@ -30,12 +33,23 @@ static void init_context(context_t *context)
     context->screen_size[0] = screen_size[0];
     context->screen_size[1] = screen_size[1];
 
-    context->lines = malloc(sizeof(int *) * 4 * 1);
-    context->lines[0] = 222;
-    context->lines[1] = 222;
-    context->lines[2] = 222;
-    context->lines[3] = 500;
-    context->line_count = 1;
+    context->line_count = 3;
+    context->lines = malloc(sizeof(int *) * 4 * context->line_count);
+
+    context->lines[0] = 200;
+    context->lines[1] = 200;
+    context->lines[2] = 200;
+    context->lines[3] = 400;
+
+    context->lines[4] = 200;
+    context->lines[5] = 400;
+    context->lines[6] = 400;
+    context->lines[7] = 400;
+
+    context->lines[8] = 400;
+    context->lines[9] = 400;
+    context->lines[10] = 400;
+    context->lines[11] = 200;
 
     return;
 }
