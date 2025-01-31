@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
@@ -38,11 +39,18 @@ typedef struct {
     player_t *player;
     TTF_Font *font;
     int *lines;
+    int *line_indices;
+    SDL_Surface **sprites;
     int line_count;
+    int sprite_count;
     int quit;
     int screen_size[2];
     long double frames[FPS];
 } context_t;
+
+void init_context(context_t *context,int screen_size[2]);
+void update_fps(context_t *context, long double frame_fps);
+void display_fps(context_t *context);
 
 void init_player(player_t **player, int ray_count);
 void render_player(context_t *context);

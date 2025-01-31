@@ -6,7 +6,7 @@
 ##
 
 SRC  = src/*.c
-LIBS = -l SDL2 -l SDL2_ttf -l m
+LIBS = -l SDL2 -l SDL2_ttf -l SDL2_image -l m
 NAME = Mood2
 DEFAULTARGS  = ""
 
