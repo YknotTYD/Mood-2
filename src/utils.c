@@ -25,7 +25,9 @@ void init_context(context_t *context, int screen_size[2])
     context->line_indices = malloc(sizeof(int) * context->line_count);
     context->sprites = malloc(sizeof(SDL_Surface *) * context->sprite_count);
 
-    context->sprites[0] = IMG_Load("assets/sprites/wall.png");
+    SDL_Surface *temp = IMG_Load("assets/sprites/wall.png");
+    context->sprites[0] = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_FreeSurface(temp);
 
     context->line_indices[0] = 0;
     context->lines[0] = 200;

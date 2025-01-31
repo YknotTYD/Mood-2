@@ -40,7 +40,7 @@ typedef struct {
     TTF_Font *font;
     int *lines;
     int *line_indices;
-    SDL_Surface **sprites;
+    SDL_Texture **sprites;
     int line_count;
     int sprite_count;
     int quit;

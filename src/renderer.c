@@ -52,8 +52,11 @@ static void load_intersect(
 
 static void process_ray(
     context_t *context, long double norm,
-    int lineindex, int ray_index, long double ray_angle
+    int lineindex, int ray_index, long double ray_angle,
+    long double p0[2], int p1[2]
 ) {
+    long double vect[2] = {p1[0] - p0[0], p1[1] - p0[1]};
+    int relnorm = sqrt(square(vect[0]) + square(vect[1]));
     int height;
 
     norm *= cos(context->player->angle - ray_angle);
@@ -63,9 +66,16 @@ static void process_ray(
     SDL_RenderDrawLine(
         context->ren,
         ray_index,
-        context->screen_size[1] / 2 - height,
+        context->screen_size[1] / 2.0 - height,
         ray_index,
-        context->screen_size[1] / 2 + height
+        context->screen_size[1] / 2.0 + height
+    );
+
+    SDL_RenderCopy(
+        context->ren,
+        context->sprites[context->line_indices[lineindex]],
+        &(SDL_Rect){((int)(relnorm * 7)) % 1080, 0, 1, 1500},
+        &(SDL_Rect){ray_index, context->screen_size[1] / 2.0 - height, 1, height * 2.0 + 1}
     );
 
     return;
@@ -121,7 +131,7 @@ static void launch_ray(
     }
 
     process_color(context, LINE_INDEX(lines, norminindex), mintersect);
-    process_ray(context, sqrt(normin), norminindex, ray_index, ray_angle);
+    process_ray(context, sqrt(normin), norminindex, ray_index, ray_angle, mintersect, LINE_INDEX(lines, norminindex));
     //SDL_SetRenderDrawColor(context->ren, 255, 0, 0, 255);
     //SDL_RenderDrawLine(context->ren, UNPACK2(mintersect), UNPACK2(context->player->pos));
 
