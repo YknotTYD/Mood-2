@@ -56,7 +56,7 @@ void render_lines(context_t *context)
     SDL_SetRenderDrawColor(context->ren, 0, 255, 0, 255);
 
     for (int i = 0; i < context->line_count; i++) {
-        SDL_RenderDrawLine(context->ren, UNPACK4(LINE_INDEX(context->lines, i)));
+        SDL_RenderDrawLine(context->ren, UNPACK4(context->lines[i].points));
     }
 
     return;

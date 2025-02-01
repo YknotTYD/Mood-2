@@ -14,7 +14,6 @@
     #define UNPACK2(arr) arr[0], arr[1]
     #define UNPACK4(arr) (arr)[0], (arr)[1], (arr)[2], (arr)[3]
     #define NOW (clock()/(double)CLOCKS_PER_SEC)
-    #define LINE_INDEX(lines, n) (&(lines)[((n) * 4)])
     #define PI 3.1415926535897932384626433832795028841L
     #define DEG_TO_RAD(angle) (((angle) / 180.0) * PI)
     #define ABS(n) ((n) > 0 ? (n): -(n))
@@ -34,13 +33,17 @@ typedef struct {
 } player_t;
 
 typedef struct {
+    int points[4];
+    int index;
+} line_t;
+
+typedef struct {
     SDL_Window *win;
     SDL_Renderer *ren;
     SDL_Event events;
     player_t *player;
     TTF_Font *font;
-    int *lines;
-    int *line_indices;
+    line_t *lines;
     SDL_Texture **sprites;
     int line_count;
     int sprite_count;

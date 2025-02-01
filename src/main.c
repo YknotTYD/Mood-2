@@ -3,16 +3,14 @@
 #include "../include/main.h"
 //#include <emscripten.h>
 
-//display FPS
 //cache every (ray/render)related cacheable thing
 //make the rendering use shaders
 //use the ray hit angle to add shade
-//add a README
-//put everything into more files
-//clean up everything
-//add y rendering offset to make like tall house and towers and shit
 //add step-based yoffset
-//add a line_t;
+//normalize player movements
+//add mode7
+//make a level editor
+//add basic shadows?
 
 static int screen_size[2]={1650, 900};
 static context_t context;

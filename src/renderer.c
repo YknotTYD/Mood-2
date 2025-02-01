@@ -52,10 +52,10 @@ static void load_intersect(
 
 static void process_ray(
     context_t *context, long double norm,
-    int lineindex, int ray_index, long double ray_angle,
-    long double p0[2], int p1[2]
+    int ray_index, long double ray_angle,
+    long double intersect[2], line_t *line
 ) {
-    long double vect[2] = {p1[0] - p0[0], p1[1] - p0[1]};
+    long double vect[2] = {line->points[0] - intersect[0], line->points[1] - intersect[1]};
     long double relnorm = sqrt(square(vect[0]) + square(vect[1]));
     int height;
 
@@ -64,19 +64,10 @@ static void process_ray(
 
     SDL_RenderCopy(
         context->ren,
-        context->sprites[context->line_indices[lineindex]],
-        &(SDL_Rect){((int)(relnorm * 7)) % 1080, 0, 1, 1500},
+        context->sprites[line->index],
+        &(SDL_Rect){((int)(relnorm * 10)) % 1080, 0, 1, 5000},
         &(SDL_Rect){ray_index, context->screen_size[1] / 2.0 - height, 1, height * 2.0 + 1}
     );
-
-    /*SDL_SetRenderDrawColor(context->ren, 255, 255, 255, 0);
-    SDL_RenderDrawLine(
-        context->ren,
-        ray_index,
-        context->screen_size[1] / 2.0 - height,
-        ray_index,
-        context->screen_size[1] / 2.0 + height
-    );*/
 
     return;
 }
@@ -85,7 +76,7 @@ static void launch_ray(
     int ray[4], context_t *context,
     int ray_index, long double ray_angle
 ) {
-    int *lines = context->lines;
+    line_t *lines = context->lines;
     int line_count = context->line_count;
 
     long double intersect[2];
@@ -98,7 +89,7 @@ static void launch_ray(
         load_intersect(
             intersect,
             UNPACK4(ray),
-            UNPACK4(LINE_INDEX(lines, i))
+            UNPACK4(lines[i].points)
         );
         if (intersect[0] != intersect[0]) {
             continue;
@@ -117,7 +108,7 @@ static void launch_ray(
         return;
     }
 
-    process_ray(context, sqrt(normin), norminindex, ray_index, ray_angle, mintersect, LINE_INDEX(lines, norminindex));
+    process_ray(context, sqrt(normin), ray_index, ray_angle, mintersect, &lines[norminindex]);
     //SDL_SetRenderDrawColor(context->ren, 255, 0, 0, 255);
     //SDL_RenderDrawLine(context->ren, UNPACK2(mintersect), UNPACK2(context->player->pos));
 

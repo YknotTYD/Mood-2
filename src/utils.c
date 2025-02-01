@@ -20,10 +20,9 @@ void init_context(context_t *context, int screen_size[2])
         context->frames[i] = 1;
     }
 
-    context->line_count = 3;
-    context->sprite_count = 2;
-    context->lines = malloc(sizeof(int *) * 4 * context->line_count);
-    context->line_indices = malloc(sizeof(int) * context->line_count);
+    context->line_count = 4;
+    context->sprite_count = 3;
+    context->lines = malloc(sizeof(line_t) * context->line_count);
     context->sprites = malloc(sizeof(SDL_Surface *) * context->sprite_count);
 
     SDL_Surface *temp = IMG_Load("assets/sprites/wall.png");
@@ -34,23 +33,33 @@ void init_context(context_t *context, int screen_size[2])
     context->sprites[1] = SDL_CreateTextureFromSurface(context->ren, temp);
     SDL_FreeSurface(temp);
 
-    context->line_indices[0] = 0;
-    context->lines[0] = 200;
-    context->lines[1] = 200;
-    context->lines[2] = 200;
-    context->lines[3] = 400;
+    temp = IMG_Load("assets/sprites/elsewall.png");
+    context->sprites[2] = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_FreeSurface(temp);
 
-    context->line_indices[1] = 1;
-    context->lines[4] = 200;
-    context->lines[5] = 400;
-    context->lines[6] = 400;
-    context->lines[7] = 400;
+    context->lines[0].index = 0;
+    context->lines[0].points[0] = 200;
+    context->lines[0].points[1] = 200;
+    context->lines[0].points[2] = 200;
+    context->lines[0].points[3] = 400;
 
-    context->line_indices[2] = 0;
-    context->lines[8] = 400;
-    context->lines[9] = 400;
-    context->lines[10] = 400;
-    context->lines[11] = 200;
+    context->lines[1].index = 1;
+    context->lines[1].points[0] = 200;
+    context->lines[1].points[1] = 400;
+    context->lines[1].points[2] = 400;
+    context->lines[1].points[3] = 400;
+
+    context->lines[2].index = 0;
+    context->lines[2].points[0] = 400;
+    context->lines[2].points[1] = 400;
+    context->lines[2].points[2] = 400;
+    context->lines[2].points[3] = 200;
+
+    context->lines[3].index = 2;
+    context->lines[3].points[0] = 400;
+    context->lines[3].points[1] = 200;
+    context->lines[3].points[2] = 600;
+    context->lines[3].points[3] = 300;
 
     return;
 }
