@@ -56,20 +56,11 @@ static void process_ray(
     long double p0[2], int p1[2]
 ) {
     long double vect[2] = {p1[0] - p0[0], p1[1] - p0[1]};
-    int relnorm = sqrt(square(vect[0]) + square(vect[1]));
+    long double relnorm = sqrt(square(vect[0]) + square(vect[1]));
     int height;
 
     norm *= cos(context->player->angle - ray_angle);
     height = WALLHEIGHT / norm;
-
-    (void)lineindex;
-    SDL_RenderDrawLine(
-        context->ren,
-        ray_index,
-        context->screen_size[1] / 2.0 - height,
-        ray_index,
-        context->screen_size[1] / 2.0 + height
-    );
 
     SDL_RenderCopy(
         context->ren,
@@ -78,18 +69,14 @@ static void process_ray(
         &(SDL_Rect){ray_index, context->screen_size[1] / 2.0 - height, 1, height * 2.0 + 1}
     );
 
-    return;
-}
-
-static void process_color(context_t *context, int p0[2], long double p1[2])
-{
-    long double vect[2] = {p1[0] - p0[0], p1[1] - p0[1]};
-    long double norm = sqrt(square(vect[0]) + square(vect[1]));
-
-    norm *= 4.0;
-    norm = (int)norm % 255;
-
-    SDL_SetRenderDrawColor(context->ren, norm, 255 - norm, 0, 255);
+    /*SDL_SetRenderDrawColor(context->ren, 255, 255, 255, 0);
+    SDL_RenderDrawLine(
+        context->ren,
+        ray_index,
+        context->screen_size[1] / 2.0 - height,
+        ray_index,
+        context->screen_size[1] / 2.0 + height
+    );*/
 
     return;
 }
@@ -130,7 +117,6 @@ static void launch_ray(
         return;
     }
 
-    process_color(context, LINE_INDEX(lines, norminindex), mintersect);
     process_ray(context, sqrt(normin), norminindex, ray_index, ray_angle, mintersect, LINE_INDEX(lines, norminindex));
     //SDL_SetRenderDrawColor(context->ren, 255, 0, 0, 255);
     //SDL_RenderDrawLine(context->ren, UNPACK2(mintersect), UNPACK2(context->player->pos));

@@ -12,6 +12,7 @@
 //clean up everything
 //add y rendering offset to make like tall house and towers and shit
 //add step-based yoffset
+//add a line_t;
 
 static int screen_size[2]={1650, 900};
 static context_t context;

@@ -10,6 +10,7 @@ void init_context(context_t *context, int screen_size[2])
     
     context->win = SDL_CreateWindow("Mood-2", 100, 75, UNPACK2(screen_size), SDL_WINDOW_SHOWN);
     context->ren = SDL_CreateRenderer(context->win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    SDL_SetRenderDrawBlendMode(context->ren, SDL_BLENDMODE_BLEND);
     context->quit = 0;
 
     context->screen_size[0] = screen_size[0];
@@ -20,7 +21,7 @@ void init_context(context_t *context, int screen_size[2])
     }
 
     context->line_count = 3;
-    context->sprite_count = 1;
+    context->sprite_count = 2;
     context->lines = malloc(sizeof(int *) * 4 * context->line_count);
     context->line_indices = malloc(sizeof(int) * context->line_count);
     context->sprites = malloc(sizeof(SDL_Surface *) * context->sprite_count);
@@ -29,13 +30,17 @@ void init_context(context_t *context, int screen_size[2])
     context->sprites[0] = SDL_CreateTextureFromSurface(context->ren, temp);
     SDL_FreeSurface(temp);
 
+    temp = IMG_Load("assets/sprites/otherwall.png");
+    context->sprites[1] = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_FreeSurface(temp);
+
     context->line_indices[0] = 0;
     context->lines[0] = 200;
     context->lines[1] = 200;
     context->lines[2] = 200;
     context->lines[3] = 400;
 
-    context->line_indices[1] = 0;
+    context->line_indices[1] = 1;
     context->lines[4] = 200;
     context->lines[5] = 400;
     context->lines[6] = 400;
