@@ -12,6 +12,7 @@
 //add basic shadows?
 //add the ability to look up and down
 //load walls from some file
+//add a sprite_t
 //add a mode7
 //find the correct value for RENDER_NORMULT
 //cache every (ray/render)related cacheable thing (and call the caches stuff like ray_angles_cache)

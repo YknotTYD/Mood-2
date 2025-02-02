@@ -39,13 +39,19 @@ typedef struct {
 } line_t;
 
 typedef struct {
+    int width;
+    int height;
+    SDL_Texture *texture;
+} sprite_t;
+
+typedef struct {
     SDL_Window *win;
     SDL_Renderer *ren;
     SDL_Event events;
     player_t *player;
     TTF_Font *font;
     line_t *lines;
-    SDL_Texture **sprites;
+    sprite_t *sprites;
     int line_count;
     int sprite_count;
     int quit;

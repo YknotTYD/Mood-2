@@ -30,18 +30,21 @@ void init_context(context_t *context, int screen_size[2])
     context->line_count = 4;
     context->sprite_count = 3;
     context->lines = malloc(sizeof(line_t) * context->line_count);
-    context->sprites = malloc(sizeof(SDL_Surface *) * context->sprite_count);
+    context->sprites = malloc(sizeof(sprite_t) * context->sprite_count);
 
     SDL_Surface *temp = IMG_Load("assets/sprites/wall.png");
-    context->sprites[0] = SDL_CreateTextureFromSurface(context->ren, temp);
+    context->sprites[0].texture = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_QueryTexture(context->sprites[0].texture, 0, 0, &context->sprites[0].width, &context->sprites[0].height);
     SDL_FreeSurface(temp);
 
     temp = IMG_Load("assets/sprites/otherwall.png");
-    context->sprites[1] = SDL_CreateTextureFromSurface(context->ren, temp);
+    context->sprites[1].texture = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_QueryTexture(context->sprites[1].texture, 0, 0, &context->sprites[1].width, &context->sprites[1].height);
     SDL_FreeSurface(temp);
 
     temp = IMG_Load("assets/sprites/elsewall.png");
-    context->sprites[2] = SDL_CreateTextureFromSurface(context->ren, temp);
+    context->sprites[2].texture = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_QueryTexture(context->sprites[2].texture, 0, 0, &context->sprites[2].width, &context->sprites[2].height);
     SDL_FreeSurface(temp);
 
     context->lines[0].index = 0;

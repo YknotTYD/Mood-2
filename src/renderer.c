@@ -57,6 +57,7 @@ static void process_ray(
 ) {
     long double vect[2] = {line->points[0] - intersect[0], line->points[1] - intersect[1]};
     long double relnorm = sqrt(square(vect[0]) + square(vect[1]));
+    sprite_t *sprite = &context->sprites[line->index];
     int height;
 
     norm *= cos(context->player->angle - ray_angle);
@@ -64,8 +65,8 @@ static void process_ray(
 
     SDL_RenderCopy(
         context->ren,
-        context->sprites[line->index],
-        &(SDL_Rect){((int)(relnorm * RENDER_NORMULT)) % 1080, 0, 1, 5000},
+        sprite->texture,
+        &(SDL_Rect){((int)(relnorm * RENDER_NORMULT)) % sprite->width, 0, 1, sprite->height},
         &(SDL_Rect){ray_index, context->screen_size[1] / 2.0 - height, 1, height * 2.0 + 1}
     );
 
