@@ -65,7 +65,7 @@ static void process_ray(
     SDL_RenderCopy(
         context->ren,
         context->sprites[line->index],
-        &(SDL_Rect){((int)(relnorm * 10)) % 1080, 0, 1, 5000},
+        &(SDL_Rect){((int)(relnorm * RENDER_NORMULT)) % 1080, 0, 1, 5000},
         &(SDL_Rect){ray_index, context->screen_size[1] / 2.0 - height, 1, height * 2.0 + 1}
     );
 
@@ -109,8 +109,6 @@ static void launch_ray(
     }
 
     process_ray(context, sqrt(normin), ray_index, ray_angle, mintersect, &lines[norminindex]);
-    //SDL_SetRenderDrawColor(context->ren, 255, 0, 0, 255);
-    //SDL_RenderDrawLine(context->ren, UNPACK2(mintersect), UNPACK2(context->player->pos));
 
     return;
 }
@@ -126,7 +124,7 @@ void render(context_t *context)
 
     for (int ray_index = 0; ray_index < player->ray_count; ray_index++) {
 
-        plane = (2.0 * ray_index / (long double)(player->ray_count - 1) - 1.0);
+        plane = (2.0 * ray_index / (long double)(player->ray_count + 1.0) - 1.0);
         angle = player->angle + atan(plane * tan(DEG_TO_RAD(player->FOV) / 2.0));
 
         ray[0] = player->pos[0];

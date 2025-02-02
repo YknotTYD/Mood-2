@@ -83,21 +83,13 @@ static void update_player_pos(player_t *player, const unsigned char *keyboard)
 
 }
 
-static void update_player_angle(player_t *player, const unsigned char *keyboard)
-{
-    long double vect = keyboard[SDL_SCANCODE_RIGHT] - keyboard[SDL_SCANCODE_LEFT];
-    player->angle += vect * PLAYER_ANGULAR_SPEED;
-
-    return;
-}
-
 void update_player(context_t *context)
 {
     const unsigned char *keyboard = SDL_GetKeyboardState(0);
     player_t *player = context->player;
 
     
-    update_player_angle(player, keyboard);
+    player->angle += context->vel[0] * PLAYER_ANGULAR_SPEED;
     update_player_pos(player, keyboard);
     return;
 }

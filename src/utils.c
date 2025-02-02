@@ -10,8 +10,10 @@ void init_context(context_t *context, int screen_size[2])
     
     context->win = SDL_CreateWindow("Mood-2", 100, 75, UNPACK2(screen_size), SDL_WINDOW_SHOWN);
     context->ren = SDL_CreateRenderer(context->win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    SDL_SetRenderDrawBlendMode(context->ren, SDL_BLENDMODE_BLEND);
     context->quit = 0;
+
+    SDL_SetRenderDrawBlendMode(context->ren, SDL_BLENDMODE_BLEND);
+    SDL_ShowCursor(SDL_DISABLE);
 
     context->screen_size[0] = screen_size[0];
     context->screen_size[1] = screen_size[1];
@@ -19,6 +21,11 @@ void init_context(context_t *context, int screen_size[2])
     for (int i = 0; i < FPS; i++) {
         context->frames[i] = 1;
     }
+    for (int i = 0; i < 4; i++) {
+        context->mouse_pos[i] = 0;
+    }
+    context->vel[0] = 0;
+    context->vel[1] = 0;
 
     context->line_count = 4;
     context->sprite_count = 3;
@@ -138,6 +145,22 @@ void display_fps(context_t *context)
 
     SDL_FreeSurface(surf);
     SDL_DestroyTexture(text);
+
+    return;
+}
+
+void update_vel(context_t *context)
+{
+    SDL_GetMouseState(&context->mouse_pos[0], &context->mouse_pos[1]);
+
+    context->vel[0] = context->mouse_pos[0] - context->screen_size[0] / 2;
+    context->vel[1] = context->mouse_pos[1] - context->screen_size[1] / 2;
+
+    SDL_WarpMouseInWindow(
+        context->win,
+        context->screen_size[0] / 2,
+        context->screen_size[1] / 2
+    );
 
     return;
 }

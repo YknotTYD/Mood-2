@@ -3,18 +3,22 @@
 #include "../include/main.h"
 //#include <emscripten.h>
 
-//cache every (ray/render)related cacheable thing
 //make the rendering use shaders
 //use the ray hit angle to add shade
 //add step-based yoffset
 //normalize player movements
-//add mode7
 //make a level editor
+//add enemies with pathfinding
 //add basic shadows?
+//add the ability to look up and down
+//load walls from some file
+//add a mode7
+//find the correct value for RENDER_NORMULT
+//cache every (ray/render)related cacheable thing (and call the caches stuff like ray_angles_cache)
+//add collisions
 
 static int screen_size[2]={1650, 900};
 static context_t context;
-//static const unsigned char *keyboard;
 
 static int poll_quit(void)
 {
@@ -31,14 +35,13 @@ static void main_loop(context_t *context)
 {
     double frame_start = NOW;
 
+    update_vel(context);
     update_player(context);
 
     SDL_SetRenderDrawColor(context->ren, 0, 0, 0, 255);
     SDL_RenderClear(context->ren);
 
     render(context);
-    //render_player(context);
-    //render_lines(context);
     display_fps(context);
 
     SDL_RenderPresent(context->ren);

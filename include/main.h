@@ -19,10 +19,11 @@
     #define ABS(n) ((n) > 0 ? (n): -(n))
     #define PLAYER_RADIUS 10
     #define PLAYER_SPEED 7
-    #define PLAYER_ANGULAR_SPEED 0.06
+    #define PLAYER_ANGULAR_SPEED 0.005
     #define RAY_LEN 1e+5
     #define WALLHEIGHT 21000
     #define FPS 120
+    #define RENDER_NORMULT 10
 
 typedef struct {
     long double pos[2];
@@ -49,6 +50,8 @@ typedef struct {
     int sprite_count;
     int quit;
     int screen_size[2];
+    int mouse_pos[2];
+    int vel[2];
     long double frames[FPS];
 } context_t;
 
@@ -60,6 +63,7 @@ void init_player(player_t **player, int ray_count);
 void render_player(context_t *context);
 void render_lines(context_t *context);
 void update_player(context_t *context);
+void update_vel(context_t *context);
 
 void render(context_t *context);
 
