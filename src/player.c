@@ -2,9 +2,24 @@
 
 #include "../include/main.h"
 
+static void cache_rays(player_t *player)
+{
+    long double plane;
+
+    player->angles = malloc(sizeof(long double) * player->ray_count);
+
+    for (int i = 0; i < player->ray_count; i++) {
+        plane = (2.0 * i / (long double)(player->ray_count + 1.0) - 1.0);
+        player->angles[i] = atan(plane * tan(DEG_TO_RAD(player->FOV) / 2.0));
+    }
+
+    return;
+}
+
 void init_player(player_t **player, int ray_count)
 {
     *player = malloc(sizeof(player_t));
+
     (*player)->pos[0] = 352.0;
     (*player)->pos[1] = 352.0;
     (*player)->angle = 3.0;
@@ -12,6 +27,9 @@ void init_player(player_t **player, int ray_count)
     (*player)->ray_count = ray_count;
     (*player)->ray_step = DEG_TO_RAD((*player)->FOV) /
         (long double)(*player)->ray_count;
+
+    cache_rays(*player);
+
     return;
 }
 

@@ -28,6 +28,7 @@
 typedef struct {
     long double pos[2];
     long double angle;
+    long double *angles;
     int FOV;
     int ray_count;
     long double ray_step;
