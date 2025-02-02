@@ -2,11 +2,6 @@
 
 #include "../include/main.h"
 
-static long double square(const long double n)
-{
-    return n * n;
-}
-
 static int delta_cmp(long double n, long double delta)
 {
     if (delta > 0) {
@@ -17,15 +12,15 @@ static int delta_cmp(long double n, long double delta)
 
 static void load_intersect(
     long double intersect[2],
-    int x1, int y1, int x2, int y2,
-    int x3, int y3, int x4, int y4
+    long double x1, long double y1, long double x2, long double y2,
+    long double x3, long double y3, long double x4, long double y4
 ) {
-    int a = x2 - x1;
-    int b = x4 - x3;
-    int c = x3 - x1;
-    int d = y2 - y1;
-    int e = y4 - y3;
-    int f = y3 - y1;
+    long double a = x2 - x1;
+    long double b = x4 - x3;
+    long double c = x3 - x1;
+    long double d = y2 - y1;
+    long double e = y4 - y3;
+    long double f = y3 - y1;
 
     long double delta = (a * e - d * b);
     long double s;
@@ -56,7 +51,7 @@ static void process_ray(
     long double intersect[2], line_t *line
 ) {
     long double vect[2] = {line->points[0] - intersect[0], line->points[1] - intersect[1]};
-    long double relnorm = sqrt(square(vect[0]) + square(vect[1]));
+    long double relnorm = sqrt(SQUARE(vect[0]) + SQUARE(vect[1]));
     sprite_t *sprite = &context->sprites[line->index];
     int height;
 
@@ -74,32 +69,31 @@ static void process_ray(
 }
 
 static void launch_ray(
-    int ray[4], context_t *context,
-    int ray_index, long double ray_angle
+    context_t *context, long double ray[4],
+    long double mintersect[2], long double *normin, line_t **minline
 ) {
-    line_t *lines = context->lines;
-    int line_count = context->line_count;
-
     long double intersect[2];
     long double norm = 0;
-    long double normin = 1.0 / 0.0;
-    long double mintersect[2] = {0.0 / 0.0, 0.0 / 0.0};
     int norminindex = -1;
 
-    for (int i = 0; i < line_count; i++) {
+    mintersect[0] = 0.0 / 0.0;
+    mintersect[1] = 0.0 / 0.0;
+    *normin = 1.0 / 0.0;
+
+    for (int i = 0; i < context->line_count; i++) {
         load_intersect(
             intersect,
             UNPACK4(ray),
-            UNPACK4(lines[i].points)
+            UNPACK4(context->lines[i].points)
         );
         if (intersect[0] != intersect[0]) {
             continue;
         }
-        norm = square(intersect[0] - ray[0]) + square(intersect[1] - ray[1]);
-        if (norm >= normin) {
+        norm = SQUARE(intersect[0] - ray[0]) + SQUARE(intersect[1] - ray[1]);
+        if (norm >= *normin) {
             continue;
         }
-        normin = norm;
+        *normin = norm;
         norminindex = i;
         mintersect[0] = intersect[0];
         mintersect[1] = intersect[1];
@@ -109,10 +103,8 @@ static void launch_ray(
         return;
     }
 
-    process_ray(
-        context, sqrt(normin), ray_index,
-        ray_angle, mintersect, &lines[norminindex]
-    );
+    *normin = sqrt(*normin);
+    *minline = &context->lines[norminindex];
 
     return;
 }
@@ -121,7 +113,11 @@ void render(context_t *context)
 {
     player_t *player = context->player;
     long double angle;
-    int ray[4];
+    long double ray[4];
+
+    long double intersect[2];
+    long double norm;
+    line_t *line;
 
     for (int ray_index = 0; ray_index < player->ray_count; ray_index++) {
 
@@ -132,7 +128,20 @@ void render(context_t *context)
         ray[2] = player->pos[0] + cosl(angle) * RAY_LEN;
         ray[3] = player->pos[1] + sinl(angle) * RAY_LEN;
 
-        launch_ray(ray, context, ray_index, angle);
+        launch_ray(
+            context, ray,
+            intersect, &norm, &line
+        );
+
+        if (intersect[0] != intersect[0]) {
+            continue;
+        }
+
+        process_ray(
+            context, norm, ray_index,
+            angle, intersect, line
+        );
+
     }
     return;
 }

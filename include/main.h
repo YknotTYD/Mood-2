@@ -17,6 +17,7 @@
     #define PI 3.1415926535897932384626433832795028841L
     #define DEG_TO_RAD(angle) (((angle) / 180.0) * PI)
     #define ABS(n) ((n) > 0 ? (n): -(n))
+    #define SQUARE(n) ((n) * (n))
     #define PLAYER_RADIUS 10
     #define PLAYER_SPEED 7
     #define PLAYER_ANGULAR_SPEED 0.005

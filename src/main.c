@@ -6,17 +6,16 @@
 //free everything
 //make the rendering use shaders
 //use the ray hit angle to add shade
-//add step-based yoffset
 //normalize player movements
 //make a level editor
 //add enemies with pathfinding
 //add basic shadows?
 //add the ability to look up and down
+//find the correct value for RENDER_NORMULT
+//add step-based yoffset
 //load walls from some file
 //add a mode7
-//find the correct value for RENDER_NORMULT
 //add collisions
-//cache every (ray/render)related cacheable thing (and call the caches stuff like ray_angles_cache)
 
 static int screen_size[2]={1650, 900};
 static context_t context;
