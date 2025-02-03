@@ -62,7 +62,11 @@ static void process_ray(
         context->ren,
         sprite->texture,
         &(SDL_Rect){((int)(relnorm * RENDER_NORMULT)) % sprite->width, 0, 1, sprite->height},
-        &(SDL_Rect){ray_index, context->screen_size[1] / 2.0 - height, 1, height * 2.0 + 1}
+        &(SDL_Rect){
+            ray_index,
+            context->screen_size[1] / 2.0 - height - context->player->z,
+            1,
+            height * 2.0 + 1}
     );
 
     return;

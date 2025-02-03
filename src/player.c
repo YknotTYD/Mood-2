@@ -20,10 +20,11 @@ void init_player(player_t **player, int ray_count)
 {
     *player = malloc(sizeof(player_t));
 
-    (*player)->pos[0] = 352.0;
-    (*player)->pos[1] = 352.0;
-    (*player)->angle = 3.0;
-    (*player)->FOV = 120.0;
+    (*player)->pos[0] = 352;
+    (*player)->pos[1] = 352;
+    (*player)->z = 0;
+    (*player)->angle = 3;
+    (*player)->FOV = 120;
     (*player)->ray_count = ray_count;
     (*player)->ray_step = DEG_TO_RAD((*player)->FOV) /
         (long double)(*player)->ray_count;
@@ -179,68 +180,23 @@ static void update_player_pos(context_t *context, const unsigned char *keyboard)
     return;
 }
 
-void update_player(context_t *context)
+void update_player(context_t *context, long double clock)
 {
     const unsigned char *keyboard = SDL_GetKeyboardState(0);
-    
+    long double vect[2] = {UNPACK2(context->player->pos)};
+
     context->player->angle += context->vel[0] * PLAYER_ANGULAR_SPEED;
     update_player_pos(context, keyboard);
+
+    vect[0] -= context->player->pos[0];
+    vect[1] -= context->player->pos[1];
+
+    if (vect[0] || vect[1]){
+        context->player->z = (sin(clock * PLAYER_STEP_SPEED) + 1.0) * PLAYER_STEP_HEIGHT;
+        return;
+    }
+
+    context->player->z *= 0.8;
+
     return;
 }
-
-/*
-    long double ray[4];
-    long double intersect[2];
-    long double norm;
-    line_t *line;
-    long double original_pos[2];
-    
-    // Store original position in case we need to revert
-    original_pos[0] = context->player->pos[0];
-    original_pos[1] = context->player->pos[1];
-
-    ray[0] = context->player->pos[0];
-    ray[1] = context->player->pos[1];
-    ray[2] = context->player->pos[0] + vect[0] * PLAYER_SPEED;
-    ray[3] = context->player->pos[1] + vect[1] * PLAYER_SPEED;
-
-    launch_ray(context, ray, intersect, &norm, &line);
-
-    if (intersect[0] != intersect[0]) {
-        context->player->pos[0] = ray[2];
-        context->player->pos[1] = ray[3];
-        return;
-    }
-
-    // Try first slide
-    slide_player(context, line, intersect, ray + 2);
-    
-    // Check if our slide caused a new collision
-    ray[0] = original_pos[0];
-    ray[1] = original_pos[1];
-    ray[2] = context->player->pos[0];
-    ray[3] = context->player->pos[1];
-    
-    launch_ray(context, ray, intersect, &norm, &line);
-    
-    if (intersect[0] != intersect[0]) {
-        // No secondary collision, we're good
-        return;
-    }
-    
-    // We hit another wall during slide - try sliding along it
-    slide_player(context, line, intersect, ray + 2);
-    
-    // If we're still in a bad spot, just revert to original position
-    ray[0] = original_pos[0];
-    ray[1] = original_pos[1];
-    ray[2] = context->player->pos[0];
-    ray[3] = context->player->pos[1];
-    
-    launch_ray(context, ray, intersect, &norm, &line);
-    if (intersect[0] == intersect[0]) {
-        // Still colliding, revert everything
-        context->player->pos[0] = original_pos[0];
-        context->player->pos[1] = original_pos[1];
-    }
-*/

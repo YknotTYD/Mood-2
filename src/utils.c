@@ -27,7 +27,7 @@ void init_context(context_t *context, int screen_size[2])
     context->vel[0] = 0;
     context->vel[1] = 0;
 
-    context->line_count = 5;
+    context->line_count = 7;
     context->sprite_count = 4;
     context->lines = malloc(sizeof(line_t) * context->line_count);
     context->sprites = malloc(sizeof(sprite_t) * context->sprite_count);
@@ -81,6 +81,18 @@ void init_context(context_t *context, int screen_size[2])
     context->lines[4].points[1] = 5000;
     context->lines[4].points[2] = 4800;
     context->lines[4].points[3] = 4800;
+
+    context->lines[5].index = 0;
+    context->lines[5].points[0] = 500;
+    context->lines[5].points[1] = 500;
+    context->lines[5].points[2] = 500;
+    context->lines[5].points[3] = 1500;
+
+    context->lines[6].index = 0;
+    context->lines[6].points[0] = 600;
+    context->lines[6].points[1] = 500;
+    context->lines[6].points[2] = 600;
+    context->lines[6].points[3] = 1500;
 
     return;
 }

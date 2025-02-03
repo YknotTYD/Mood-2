@@ -12,10 +12,9 @@
 //add basic shadows?
 //add the ability to look up and down
 //find the correct value for RENDER_NORMULT
-//add step-based yoffset
 //load walls from some file
 //add a mode7
-//make it so that you "slide" off walls when running into them
+//add step-based yoffset
 
 static int screen_size[2]={1650, 900};
 static context_t context;
@@ -36,7 +35,7 @@ static void main_loop(context_t *context)
     double frame_start = NOW;
 
     update_vel(context);
-    update_player(context);
+    update_player(context, NOW);
 
     SDL_SetRenderDrawColor(context->ren, 0, 0, 0, 255);
     SDL_RenderClear(context->ren);

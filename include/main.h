@@ -25,14 +25,17 @@
     #define WALLHEIGHT 21000
     #define FPS 120
     #define RENDER_NORMULT 10
+    #define PLAYER_STEP_SPEED 50
+    #define PLAYER_STEP_HEIGHT 7
 
 typedef struct {
     long double pos[2];
     long double angle;
+    long double z; 
     long double *angles;
+    long double ray_step;
     int FOV;
     int ray_count;
-    long double ray_step;
 } player_t;
 
 typedef struct {
@@ -70,7 +73,7 @@ void display_fps(context_t *context);
 void init_player(player_t **player, int ray_count);
 void render_player(context_t *context);
 void render_lines(context_t *context);
-void update_player(context_t *context);
+void update_player(context_t *context, long double clock);
 void update_vel(context_t *context);
 
 void launch_ray(context_t *context, long double ray[4], long double mintersect[2], long double *normin, line_t **minline);
