@@ -68,7 +68,7 @@ static void process_ray(
     return;
 }
 
-static void launch_ray(
+void launch_ray(
     context_t *context, long double ray[4],
     long double mintersect[2], long double *normin, line_t **minline
 ) {
@@ -103,7 +103,7 @@ static void launch_ray(
         return;
     }
 
-    *normin = sqrt(*normin);
+    *normin = sqrt(*normin);    *minline = &context->lines[norminindex];
     *minline = &context->lines[norminindex];
 
     return;

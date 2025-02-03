@@ -15,7 +15,7 @@
 //add step-based yoffset
 //load walls from some file
 //add a mode7
-//add collisions
+//make it so that you "slide" off walls when running into them
 
 static int screen_size[2]={1650, 900};
 static context_t context;

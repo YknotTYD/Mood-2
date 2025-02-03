@@ -73,6 +73,7 @@ void render_lines(context_t *context);
 void update_player(context_t *context);
 void update_vel(context_t *context);
 
+void launch_ray(context_t *context, long double ray[4], long double mintersect[2], long double *normin, line_t **minline);
 void render(context_t *context);
 
 #endif

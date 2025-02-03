@@ -80,34 +80,85 @@ void render_lines(context_t *context)
     return;
 }
 
-static void update_player_pos(player_t *player, const unsigned char *keyboard)
+static void slide_player(
+    context_t *context, line_t *line,
+    long double pos[2], long double aim[2]
+) {
+    long double linorm;
+    long double scal;
+
+    long double player_vect[2] = {aim[0] - pos[0], aim[1] - pos[1]};
+    long double line_vect[2] = {
+        line->points[0] - line->points[2],
+        line->points[1] - line->points[3]
+    };
+
+    linorm = sqrt(SQUARE(line_vect[0]) + SQUARE(line_vect[1]));
+    
+    line_vect[0] /= linorm;
+    line_vect[1] /= linorm;
+
+    scal = player_vect[0] * line_vect[0] + player_vect[1] * line_vect[1];
+
+    context->player->pos[0] += line_vect[0] * scal;
+    context->player->pos[1] += line_vect[1] * scal;
+
+    return;
+}
+
+static void player_collide(context_t *context, long double vect[2])
 {
-    long double vect[2]={
+    long double ray[4];
+    long double intersect[2];
+    long double norm;
+    line_t *line;
+
+    ray[0] = context->player->pos[0];
+    ray[1] = context->player->pos[1];
+    ray[2] = context->player->pos[0] + vect[0] * PLAYER_SPEED;
+    ray[3] = context->player->pos[1] + vect[1] * PLAYER_SPEED;
+
+    launch_ray(context, ray, intersect, &norm, &line);
+
+    if (intersect[0] != intersect[0]) {
+        context->player->pos[0] = ray[2];
+        context->player->pos[1] = ray[3];
+        return;
+    }
+
+    slide_player(context, line, intersect, ray + 2);
+
+    return;
+}
+
+static void update_player_pos(context_t *context, const unsigned char *keyboard)
+{
+    long double vect[2];
+    int key_vect[2]={
         keyboard[SDL_SCANCODE_D] - keyboard[SDL_SCANCODE_A],
         keyboard[SDL_SCANCODE_W] - keyboard[SDL_SCANCODE_S]
     };
 
-    player->pos[0] += cos(player->angle) * vect[1] * PLAYER_SPEED;
-    player->pos[1] += sin(player->angle) * vect[1] * PLAYER_SPEED;
+    vect[0] = cos(context->player->angle) * key_vect[1];
+    vect[1] = sin(context->player->angle) * key_vect[1];
 
-    player->angle += 3.1415926535897932384626433832795028841 / 2.0;
+    context->player->angle += PI / 2.0;
 
-    player->pos[0] += cos(player->angle) * vect[0] * PLAYER_SPEED;
-    player->pos[1] += sin(player->angle) * vect[0] * PLAYER_SPEED;
+    vect[0] += cos(context->player->angle) * key_vect[0];
+    vect[1] += sin(context->player->angle) * key_vect[0];
 
-    player->angle -= 3.1415926535897932384626433832795028841 / 2.0;
+    context->player->angle -= PI / 2.0;
+
+    player_collide(context, vect);
 
     return;
-
 }
 
 void update_player(context_t *context)
 {
     const unsigned char *keyboard = SDL_GetKeyboardState(0);
-    player_t *player = context->player;
-
     
-    player->angle += context->vel[0] * PLAYER_ANGULAR_SPEED;
-    update_player_pos(player, keyboard);
+    context->player->angle += context->vel[0] * PLAYER_ANGULAR_SPEED;
+    update_player_pos(context, keyboard);
     return;
 }
