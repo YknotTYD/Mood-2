@@ -27,8 +27,8 @@ void init_context(context_t *context, int screen_size[2])
     context->vel[0] = 0;
     context->vel[1] = 0;
 
-    context->line_count = 4;
-    context->sprite_count = 3;
+    context->line_count = 5;
+    context->sprite_count = 4;
     context->lines = malloc(sizeof(line_t) * context->line_count);
     context->sprites = malloc(sizeof(sprite_t) * context->sprite_count);
 
@@ -45,6 +45,11 @@ void init_context(context_t *context, int screen_size[2])
     temp = IMG_Load("assets/sprites/elsewall.png");
     context->sprites[2].texture = SDL_CreateTextureFromSurface(context->ren, temp);
     SDL_QueryTexture(context->sprites[2].texture, 0, 0, &context->sprites[2].width, &context->sprites[2].height);
+    SDL_FreeSurface(temp);
+
+    temp = IMG_Load("assets/sprites/alido.png");
+    context->sprites[3].texture = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_QueryTexture(context->sprites[3].texture, 0, 0, &context->sprites[3].width, &context->sprites[3].height);
     SDL_FreeSurface(temp);
 
     context->lines[0].index = 0;
@@ -70,6 +75,12 @@ void init_context(context_t *context, int screen_size[2])
     context->lines[3].points[1] = 200;
     context->lines[3].points[2] = 600;
     context->lines[3].points[3] = 300;
+
+    context->lines[4].index = 3;
+    context->lines[4].points[0] = 5000;
+    context->lines[4].points[1] = 5000;
+    context->lines[4].points[2] = 4800;
+    context->lines[4].points[3] = 4800;
 
     return;
 }
