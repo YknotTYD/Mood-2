@@ -86,13 +86,13 @@ void init_context(context_t *context, int screen_size[2])
     context->lines[5].points[0] = 500;
     context->lines[5].points[1] = 500;
     context->lines[5].points[2] = 500;
-    context->lines[5].points[3] = 1500;
+    context->lines[5].points[3] = 1501;
 
     context->lines[6].index = 0;
     context->lines[6].points[0] = 600;
     context->lines[6].points[1] = 500;
     context->lines[6].points[2] = 600;
-    context->lines[6].points[3] = 1500;
+    context->lines[6].points[3] = 1501;
 
     return;
 }
