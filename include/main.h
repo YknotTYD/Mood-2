@@ -57,6 +57,7 @@ typedef struct {
     TTF_Font *font;
     line_t *lines;
     sprite_t *sprites;
+    sprite_t floor;
     int line_count;
     int sprite_count;
     int quit;
@@ -77,6 +78,6 @@ void update_player(context_t *context, long double clock);
 void update_vel(context_t *context);
 
 void launch_ray(context_t *context, long double ray[4], long double mintersect[2], long double *normin, line_t **minline);
-void render(context_t *context);
+void render_walls(context_t *context);
 
 #endif

@@ -2,6 +2,14 @@
 
 #include "../include/main.h"
 
+static long double min(long double a, long double b)
+{
+    if (a < b) {
+        return a;
+    }
+    return b;
+}
+
 static int delta_cmp(long double n, long double delta)
 {
     if (delta > 0) {
@@ -64,7 +72,7 @@ static void process_ray(
         &(SDL_Rect){((int)(relnorm * RENDER_NORMULT)) % sprite->width, 0, 1, sprite->height},
         &(SDL_Rect){
             ray_index,
-            context->screen_size[1] / 2.0 - height - context->player->z,
+            context->screen_size[1] / 2.0 - height - context->player->z * min(1, (500 / norm)),
             1,
             height * 2.0 + 1}
     );
@@ -113,7 +121,7 @@ void launch_ray(
     return;
 }
 
-void render(context_t *context)
+void render_walls(context_t *context)
 {
     player_t *player = context->player;
     long double angle;

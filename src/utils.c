@@ -52,6 +52,11 @@ void init_context(context_t *context, int screen_size[2])
     SDL_QueryTexture(context->sprites[3].texture, 0, 0, &context->sprites[3].width, &context->sprites[3].height);
     SDL_FreeSurface(temp);
 
+    temp = IMG_Load("assets/sprites/floor.png");
+    context->floor.texture = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_QueryTexture(context->floor.texture, 0, 0, &context->floor.width, &context->floor.height);
+    SDL_FreeSurface(temp);
+
     context->lines[0].index = 0;
     context->lines[0].points[0] = 200;
     context->lines[0].points[1] = 200;

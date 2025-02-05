@@ -5,14 +5,16 @@
 static void cache_rays(player_t *player)
 {
     long double plane;
+    long double half_fov = DEG_TO_RAD(player->FOV) / 2.0;
 
     player->angles = malloc(sizeof(long double) * player->ray_count);
 
     for (int i = 0; i < player->ray_count; i++) {
-        plane = (2.0 * i / (long double)(player->ray_count + 1.0) - 1.0);
-        player->angles[i] = atan(plane * tan(DEG_TO_RAD(player->FOV) / 2.0));
+        plane = (2.0 * i / (player->ray_count + 1)) - 1.0;
+        player->angles[i] = atan(plane * tan(half_fov));
     }
 
+    return;
     return;
 }
 
