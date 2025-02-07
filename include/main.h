@@ -33,7 +33,7 @@
     #define RENDER_NORMULT 10
     #define PLAYER_STEP_SPEED 50
     #define PLAYER_STEP_HEIGHT 7
-    #define MODE7_SCALE_FACT 4
+    #define MODE7_SCALE_FACT 2
 
 typedef struct {
     long double pos[2];

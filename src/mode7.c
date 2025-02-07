@@ -8,9 +8,14 @@ static color_t get_floor_color(
 ) {
     color_t color;
 
-    long double ray_angle = context->player->angle - context->player->angles[x];//(DEG_TO_RAD(context->player->FOV) / 2.0) + (x / (double)context->screen_size[0]) * DEG_TO_RAD(context->player->FOV);
+    if (ABS(half_height - y) <= 100) {
+        return 0x0000FFFF;
+    }
+
+    long double ray_angle = context->player->angle -
+        (DEG_TO_RAD(context->player->FOV) / 2.0) + (x / (double)context->screen_size[0]) * DEG_TO_RAD(context->player->FOV); //context->player->angles[x];
     double z = (y - half_height) / (double)half_height;
-    long double distance = 10 / (z * MODE7_SCALE_FACT);
+    long double distance = 100 / (z * 0.05);
 
     long double floor_x = context->player->pos[0] + distance * cosl(ray_angle);
     long double floor_y = context->player->pos[1] + distance * sinl(ray_angle);
@@ -57,9 +62,9 @@ void render_floor(context_t *context)
                 x, y, half_height
             );
 
-            color_t r = (((color & 0xFF000000) >> 24) * 1.5 + ((color_ & 0xFF000000) >> 24) * 0.5) / 2;
-            color_t g = (((color & 0x00FF0000) >> 16) * 1.5 + ((color_ & 0x00FF0000) >> 16) * 0.5) / 2;
-            color_t b = (((color & 0x0000FF00) >> 8 ) * 1.5 + ((color_ & 0x0000FF00) >> 8)  * 0.5) / 2;
+            color_t r = (((color & 0xFF000000) >> 24) * 0.5 + ((color_ & 0xFF000000) >> 24) * 1.5) / 2;
+            color_t g = (((color & 0x00FF0000) >> 16) * 0.5 + ((color_ & 0x00FF0000) >> 16) * 1.5) / 2;
+            color_t b = (((color & 0x0000FF00) >> 8 ) * 0.5 + ((color_ & 0x0000FF00) >> 8)  * 1.5) / 2;
 
             color = r << 24 | g << 16 | b << 8 | 0XFF;
 
