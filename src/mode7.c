@@ -19,6 +19,8 @@ void render_floor(context_t *context)
     );
     SDL_LockSurface(surface);
     uint32_t *pixels = surface->pixels;
+    uint32_t *floor_pixels = context->floor->pixels;
+    int floor_pitch = context->floor->pitch;
     int color;
 
     for (int x = 0; x < screen_size[0]; x++) {
@@ -29,6 +31,17 @@ void render_floor(context_t *context)
             color |= INVERSE_GRADIENT(y - half_height, half_height, SHIFT_RED);
             color |= GRADIENT(x, screen_size[0], SHIFT_GREEN);
 
+            uint32_t color_ = floor_pixels[(int)(
+                (((y - half_height) * 10) % context->floor_height) * floor_pitch / 4.0 +
+                (x * 10) % context->floor_width
+            )];
+
+            unsigned int r = (((color & 0xFF000000) >> 24) * 1.5 + ((color_ & 0xFF000000) >> 24) * 0.5) / 2;
+            unsigned int g = (((color & 0x00FF0000) >> 16) * 1.5 + ((color_ & 0x00FF0000) >> 16) * 0.5) / 2;
+            unsigned int b = (((color & 0x0000FF00) >> 8 ) * 1.5 + ((color_ & 0x0000FF00) >> 8)  * 0.5) / 2;
+
+            color = r << 24 | g << 16 | b << 8 | 0XFF;
+
             pixels[y * surface->pitch / 4 + x] = color;
 
         }
@@ -36,7 +49,6 @@ void render_floor(context_t *context)
 
     SDL_Texture *texture = SDL_CreateTextureFromSurface(context->ren, surface);
     SDL_UnlockSurface(surface);
-    SDL_UnlockTexture(context->floor.texture);
 
     SDL_RenderCopy(context->ren, texture, 0, 0);
     SDL_DestroyTexture(texture);

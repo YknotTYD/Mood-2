@@ -17,6 +17,7 @@
 //load walls from some file
 //add everything on screen at once
 //don't create and destroy the mode7 surface each frame
+//check surface locking/unlocking perfs 
 //add a mode7
 
 static int screen_size[2]={1650, 900};

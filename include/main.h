@@ -33,7 +33,7 @@
     #define RENDER_NORMULT 10
     #define PLAYER_STEP_SPEED 50
     #define PLAYER_STEP_HEIGHT 7
-    #define MODE7_SCALE_FACT 4
+    #define MODE7_SCALE_FACT 2
 
 typedef struct {
     long double pos[2];
@@ -64,7 +64,9 @@ typedef struct {
     TTF_Font *font;
     line_t *lines;
     sprite_t *sprites;
-    sprite_t floor;
+    SDL_Surface *floor;
+    int floor_width;
+    int floor_height;
     int line_count;
     int sprite_count;
     int quit;

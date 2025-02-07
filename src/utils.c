@@ -2,6 +2,27 @@
 
 #include "../include/main.h"
 
+static void load_floor(context_t *context)
+{
+    SDL_Surface *temp = IMG_Load("assets/sprites/floor.png");
+
+    SDL_Texture *query_texture = SDL_CreateTextureFromSurface(context->ren, temp);
+    SDL_QueryTexture(query_texture, 0, 0, &context->floor_width, &context->floor_height);
+
+    context->floor  = SDL_CreateRGBSurface(
+        0, context->floor_width, context->floor_height, 32,
+        0xFF000000,
+        0x00FF0000,
+        0x0000FF00,
+        0x000000FF
+    );
+
+    SDL_BlitSurface(temp, 0, context->floor, 0);
+    SDL_FreeSurface(temp);
+
+    return;
+}
+
 void init_context(context_t *context, int screen_size[2])
 {
     TTF_Init();
@@ -52,10 +73,7 @@ void init_context(context_t *context, int screen_size[2])
     SDL_QueryTexture(context->sprites[3].texture, 0, 0, &context->sprites[3].width, &context->sprites[3].height);
     SDL_FreeSurface(temp);
 
-    temp = IMG_Load("assets/sprites/floor.png");
-    context->floor.texture = SDL_CreateTextureFromSurface(context->ren, temp);
-    SDL_QueryTexture(context->floor.texture, 0, 0, &context->floor.width, &context->floor.height);
-    SDL_FreeSurface(temp);
+    load_floor(context);
 
     context->lines[0].index = 0;
     context->lines[0].points[0] = 200;
