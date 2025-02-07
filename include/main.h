@@ -18,6 +18,12 @@
     #define DEG_TO_RAD(angle) (((angle) / 180.0) * PI)
     #define ABS(n) ((n) > 0 ? (n): -(n))
     #define SQUARE(n) ((n) * (n))
+    #define SHIFT_ALPHA 0
+    #define SHIFT_BLUE 8
+    #define SHIFT_GREEN 16
+    #define SHIFT_RED 24
+    #define GRADIENT(n, d, shift) ((unsigned int)(0xFF * ((n) / (double)(d))) << (shift));
+    #define INVERSE_GRADIENT(n, d, shift) ((255 - ((unsigned int)(0xFF * ((n) / (double)(d))))) << (shift));
     #define PLAYER_RADIUS 10
     #define PLAYER_SPEED 7
     #define PLAYER_ANGULAR_SPEED 0.005
@@ -27,6 +33,7 @@
     #define RENDER_NORMULT 10
     #define PLAYER_STEP_SPEED 50
     #define PLAYER_STEP_HEIGHT 7
+    #define MODE7_SCALE_FACT 4
 
 typedef struct {
     long double pos[2];

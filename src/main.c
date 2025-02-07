@@ -16,6 +16,7 @@
 //make the steps affect far away walls less somehow?
 //load walls from some file
 //add everything on screen at once
+//don't create and destroy the mode7 surface each frame
 //add a mode7
 
 static int screen_size[2]={1650, 900};
