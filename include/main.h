@@ -33,7 +33,7 @@
     #define RENDER_NORMULT 10
     #define PLAYER_STEP_SPEED 50
     #define PLAYER_STEP_HEIGHT 7
-    #define MODE7_SCALE_FACT 2
+    #define MODE7_SCALE_FACT 4
 
 typedef struct {
     long double pos[2];
@@ -75,6 +75,8 @@ typedef struct {
     int vel[2];
     long double frames[FPS];
 } context_t;
+
+typedef unsigned int color_t;
 
 void init_context(context_t *context,int screen_size[2]);
 void update_fps(context_t *context, long double frame_fps);
