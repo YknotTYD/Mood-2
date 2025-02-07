@@ -13,8 +13,9 @@
 //add the ability to look up and down
 //stop mouse grab when not focused
 //find the correct value for RENDER_NORMULT
-//make the steps better somehow?
+//make the steps affect far away walls less somehow?
 //load walls from some file
+//add everything on screen at once
 //add a mode7
 
 static int screen_size[2]={1650, 900};
@@ -41,6 +42,7 @@ static void main_loop(context_t *context)
     SDL_SetRenderDrawColor(context->ren, 0, 0, 0, 255);
     SDL_RenderClear(context->ren);
 
+    render_floor(context);
     render_walls(context);
     display_fps(context);
 

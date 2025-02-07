@@ -21,8 +21,8 @@
     #define PLAYER_RADIUS 10
     #define PLAYER_SPEED 7
     #define PLAYER_ANGULAR_SPEED 0.005
-    #define RAY_LEN 1e+5
-    #define WALLHEIGHT 21000
+    #define RAY_LEN 1e+9
+    #define WALLHEIGHT 31000
     #define FPS 120
     #define RENDER_NORMULT 10
     #define PLAYER_STEP_SPEED 50
@@ -79,5 +79,6 @@ void update_vel(context_t *context);
 
 void launch_ray(context_t *context, long double ray[4], long double mintersect[2], long double *normin, line_t **minline);
 void render_walls(context_t *context);
+void render_floor(context_t *context);
 
 #endif

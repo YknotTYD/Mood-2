@@ -15,7 +15,6 @@ static void cache_rays(player_t *player)
     }
 
     return;
-    return;
 }
 
 void init_player(player_t **player, int ray_count)
@@ -26,7 +25,7 @@ void init_player(player_t **player, int ray_count)
     (*player)->pos[1] = 352;
     (*player)->z = 0;
     (*player)->angle = 3;
-    (*player)->FOV = 120;
+    (*player)->FOV = 90;
     (*player)->ray_count = ray_count;
     (*player)->ray_step = DEG_TO_RAD((*player)->FOV) /
         (long double)(*player)->ray_count;
@@ -73,7 +72,6 @@ void render_player(context_t *context)
 
 void render_lines(context_t *context)
 {
-
     SDL_SetRenderDrawColor(context->ren, 0, 255, 0, 255);
 
     for (int i = 0; i < context->line_count; i++) {
@@ -193,12 +191,13 @@ void update_player(context_t *context, long double clock)
     vect[0] -= context->player->pos[0];
     vect[1] -= context->player->pos[1];
 
+    (void)clock;
     if (vect[0] || vect[1]){
-        context->player->z = (sin(clock * PLAYER_STEP_SPEED) + 1.0) * PLAYER_STEP_HEIGHT;
+        //context->player->z = (sin(clock * PLAYER_STEP_SPEED) + 1.0) * PLAYER_STEP_HEIGHT;
         return;
     }
 
-    context->player->z *= 0.8;
+    //context->player->z *= 0.8;
 
     return;
 }
